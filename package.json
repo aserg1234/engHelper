@@ -1,0 +1,35 @@
+{
+  "name": "enghelper",
+  "version": "0.0.1",
+  "description": "helper for learning English",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aserg1234/engHelper.git"
+  },
+  "author": "art-svekla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aserg1234/engHelper/issues"
+  },
+  "homepage": "https://github.com/aserg1234/engHelper#readme",
+  "devDependencies": {
+    "browser-sync": "^2.26.5",
+    "gulp": "^4.0.1",
+    "gulp-pug": "^4.0.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp.spritesmith": "^6.9.0",
+    "rimraf": "^2.6.3",
+    "sass": "^1.19.0"
+  },
+  "dependencies": {
+    "font-awesome": "^4.7.0",
+    "node-sass": "^4.11.0",
+    "normalize.scss": "^0.1.0"
+  }
+}
