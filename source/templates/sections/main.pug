@@ -1,0 +1,19 @@
+section.form-section
+    .container
+        label(for="") Добавить в базу
+        form.form.form_insert_data
+            textarea(name="newData", placeholder='для БД вставь новые данные сюда')
+            button(type='submit').button отправить новые данные
+            label(for="") изменить старые данные
+            textarea(name="changeData", placeholder='Изменения в БД вставь старые данные сюда')
+            button(type='submit').button Изменить данные в БД
+        p задание
+        form.form.form_request_data
+            button(type='submit').button получить случайное задание
+            button(type='submit').button.button_theme тематическое задание
+            .request_data_exercise
+            //- здесь будет выводится задание
+            textarea(name='insertDecisionData' placeholder='вставь сюда свое решение')
+            button( type='submit').button отправить решение
+            .result_data
+            //- здесь будет выводится результат
