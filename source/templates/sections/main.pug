@@ -1,19 +1,39 @@
 section.form-section
     .container
-        label(for="") Добавить в базу
+
         form.form.form_insert_data
-            textarea(name="newData", placeholder='для БД вставь новые данные сюда')
-            button(type='submit').button отправить новые данные
+            label(for="") Создать хранилище
+            input(type="text" name="newStore" placeholder="имя нового хранилища")
+            br
+            button(type="button").button.btn_createNewStore создать 
+            br
+            label(for="") добавить категорию в хранилище
+            br
+            input(type="text" name="newCategory" placeholder="категория")
+            button(type="submit").button.btn_addNewCat добавить             
+            br
+            label(for="") Выбрать хранилище
+            select(name="pathDbTheme", placeholder="Путь к теме базы")
+            br 
+            br           
+            label(for="") Выбрать категорию           
+            select(name="pathDbTheme", placeholder="Путь к теме базы")
+            br            
+            textarea(name="newData", placeholder='Вставь новые данные сюда')
+            br
+            button(type='submit').button.btn_new_date добавить данные
+            br
             label(for="") изменить старые данные
-            textarea(name="changeData", placeholder='Изменения в БД вставь старые данные сюда')
-            button(type='submit').button Изменить данные в БД
+            br
+            textarea(name="oldData", placeholder='Вставь старые данные сюда')
+            button(type='submit').button.btn_old_date Изменить данные
         p задание
         form.form.form_request_data
-            button(type='submit').button получить случайное задание
-            button(type='submit').button.button_theme тематическое задание
+            button(type='submit').button.btn_exercise_date получить случайное задание
+            button(type='submit').button.btn_theme_date тематическое задание
             .request_data_exercise
             //- здесь будет выводится задание
-            textarea(name='insertDecisionData' placeholder='вставь сюда свое решение')
-            button( type='submit').button отправить решение
+            textarea(name='decisionData' placeholder='вставь сюда свое решение')
+            button( type='submit').button.btn_submit_decision отправить решение
             .result_data
             //- здесь будет выводится результат

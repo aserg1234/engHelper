@@ -61,6 +61,15 @@ gulp.task('styles:compile', function () {
       .pipe(gulp.dest('build/css'));
   });
 
+  //добавляю json database  задачи
+  gulp.task('json', function(){
+    return gulp.src([
+            'source/dbase/**/*',
+        ])
+        .pipe(gulp.dest('build/dbase'));
+
+});
+
   //добавляю js задачи
 gulp.task('js', function(){
     return gulp.src([
@@ -117,6 +126,8 @@ gulp.task('watch', function(){
     gulp.watch('source/templates/**/*.pug', gulp.series('templates:compile'));
     gulp.watch('source/styles/**/*.scss', gulp.series('styles:compile'));  
     gulp.watch('source/js/**/*.js', gulp.series('js'));  
+    gulp.watch('source/js/**/*.json', gulp.series('json'));    
+    
 });
 
 
@@ -124,7 +135,7 @@ gulp.task('watch', function(){
 //выполнится все что находится в этом блоке
 gulp.task('default', gulp.series(
     'clean',
-    gulp.parallel('templates:compile', 'styles:compile', 'sprite', 'copy'),
+    gulp.parallel('templates:compile', 'styles:compile', 'sprite', 'copy', 'js', 'json'),
     gulp.parallel('watch', 'server')
     )
 );
