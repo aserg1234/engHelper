@@ -2,22 +2,28 @@ section.form-section
     .container
 
         form.form.form_insert_data
-            label(for="") Создать хранилище
+            label(for="") Название хранилища
             input(type="text" name="inpStore" placeholder="имя нового хранилища")
-            br
-            button(type="button").button.btn_createNewStore создать 
-            button(type="button").button.btn_deleteStore удалить 
             br
             label(for="") добавить категорию в хранилище
             br
             input(type="text" name="newCategory" placeholder="категория")
-            button(type="submit").button.btn_addNewCat добавить             
+            input(type="text" name="uniqueCategory" placeholder="уникальность")            
+            button(type="button").button.btn_addNewCat добавить            
+            button(type="button").button.btn_delNewCat удалить               
+            br
+            button(type="button").button.btn_createNewStore создать 
+            button(type="button").button.btn_deleteStore удалить 
+            button(type="button").button.btn_preview предпросмотр            
+            br
+            br            
+            label(for="") использование БД
             br
             label(for="") Выбрать хранилище
             select(name="pathDbTheme", placeholder="Путь к теме базы")
             br 
             br           
-            label(for="") Выбрать категорию           
+            label(for="") Выбрать категорию(поле)           
             select(name="pathDbTheme", placeholder="Путь к теме базы")
             br            
             textarea(name="newData", placeholder='Вставь новые данные сюда')
