@@ -12,8 +12,9 @@
 
    ///////////////////////////////////////////////
    //глобальные переменные
-   var newStore = document.getElementsByName('newStore');
+   var inpStore = document.getElementsByName('inpStore');
    var btnCreateNewStore = document.querySelector('.btn_createNewStore');
+   var btnDeleteStore = document.querySelector('.btn_deleteStore');
    var pathToDbTheme = document.getElementsByName('pathDbTheme');
    var dataNewForDb = document.getElementsByName('newData');
    var dataOldFromDb = document.getElementsByName('oldData');
@@ -27,39 +28,29 @@
    ////////////////////////////////////////////////////
    //
    const DB_NAME = 'engHelper';
-   var DB_VERSION = 1; // Use a long long for this value (don't use a float)
+   var DB_VERSION = 1; 
    const DB_BASIC_STORE_NAME = 'basicStore';
    const DB_STORE_OF_STORES = {};
    var dbStoreName = '';
    var db;
  
-   // Used to keep track of which view is displayed to avoid to uselessly reload it
    var current_view_pub_key;
  
    function openDb() {
      console.log("openDb ...");
-//alert(this.result);
      var req = indexedDB.open(DB_NAME);//, DB_VERSION
 
      req.onsuccess = function (evt) {
        db = this.result;
        DB_VERSION = this.result.version;
-alert(this.result.version);       
        console.log("openDb DONE");
-alert("ok"+db.version);
      };
      
      req.onerror = function (evt) {
        console.error("openDb:", evt.target.errorCode);
      };
-    // версия базы при загрузке     
-    //if(db.version > 1){
-     // DB_VERSION = db.version;
 
-    //}
- alert(DB_VERSION);  
-     req.onupgradeneeded = function (evt) {
-alert(DB_VERSION);      
+     req.onupgradeneeded = function (evt) {     
       console.log("openDb.onupgradeneeded");
       var thisDB = evt.target.result;
       if (!thisDB.objectStoreNames.contains(DB_BASIC_STORE_NAME)) {
@@ -74,27 +65,22 @@ alert(DB_VERSION);
 
    }
    //
-   
-   function createNewStore(event) {
-
+   //добарить новое хранилище
+   function createNewStore() {
       db.close();    
-
       var req = indexedDB.open(DB_NAME, DB_VERSION+1);     
       req.onsuccess = function (evt) {
         db = this.result;
         console.log("openDb DONE");
       };
       DB_VERSION = db.version;
-alert(DB_VERSION);      
-//console.dir(db);
       req.onupgradeneeded = function (evt) {
       DB_VERSION += 1;
- alert(DB_VERSION);      
-       console.log("openDb.onupgradeneeded");
+      console.log("openDb.onupgradeneeded");
        var thisDB = evt.target.result;
-       //if (!thisDB.objectStoreNames.contains(newStore[0].value)) {
+       //if (!thisDB.objectStoreNames.contains(inpStore[0].value)) {
           var store = thisDB.createObjectStore(
-            newStore[0].value, { keyPath: 'id', autoIncrement: true });
+            inpStore[0].value, { keyPath: 'id', autoIncrement: true });
             
           store.createIndex('biblioid', 'biblioid', { unique: true });
           store.createIndex('title', 'title', { unique: false });
@@ -102,19 +88,41 @@ alert(DB_VERSION);
         //}
 
       };
-//
     }
 
+   //удалить хранилище
+   function deleteStore() {
+    db.close();    
+    var req = indexedDB.open(DB_NAME, DB_VERSION+1);     
+    req.onsuccess = function (evt) {
+      db = this.result;
+      console.log("openDb DONE");
+    };
+ 
+    DB_VERSION = db.version;
+alert(DB_VERSION); 
+    req.onupgradeneeded = function (evt) {
+
+      DB_VERSION += 1;
+      console.log("openDb.onupgradeneeded");
+       var thisDB = evt.target.result;
+       thisDB.deleteObjectStore(inpStore[0].value);
+alert(DB_VERSION); 
+      };
+
+  }    
 
     //обработчики событий
     function addEventListeners(){
      
       //обработка создания нового хранилища
       btnCreateNewStore.addEventListener("click", createNewStore);
+      //обработка удаления хранилища
+      btnDeleteStore.addEventListener("click", deleteStore);
+
+
 
     }
-
-
 
    //////////////////////////////////////////////////////
    //кнопки
