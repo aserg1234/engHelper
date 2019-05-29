@@ -20,10 +20,13 @@
    var newCategory = document.getElementsByName('newCategory');
    var uniqueCategory = document.getElementsByName('uniqueCategory');
    var btnPreview = document.querySelector('.btn_preview');     
-   var pathToDbTheme = document.getElementsByName('pathDbTheme');
-   var dataNewForDb = document.getElementsByName('newData');
-   var dataOldFromDb = document.getElementsByName('oldData');
-   var dataDecisionForDb = document.getElementsByName('decisionData');
+   var selectDbStores = document.getElementsByName('dbStores');
+   var btnSelectStore = document.querySelector('.btn_selectStore');
+   var selectStoreCategories = document.getElementsByName('storeCategories');
+   
+  //  var dataNewForDb = document.getElementsByName('newData');
+  //  var dataOldFromDb = document.getElementsByName('oldData');
+  //  var dataDecisionForDb = document.getElementsByName('decisionData');
 
    //var jsonDataDB = JSON.parse(base);
 
@@ -39,19 +42,46 @@
    var dbStoreName = '';
    var db;
    var newCategoryObj = {};
- 
+   var objStores ={};
+   var str = '';
    var current_view_pub_key;
-   //создание базы данных и базового хранилища 
+
+   //создание базы данных и базового хранилища + создание списка хранилищ
    function openDb() {
      console.log("openDb ...");
      var req = indexedDB.open(DB_NAME);//, DB_VERSION
-
      req.onsuccess = function (evt) {
        db = this.result;
+
+       //получение имен хранилищ в базе
+       //и создание options
+       for(var i in db.objectStoreNames){
+          if( i >= 0 ){
+            var option = document.createElement('option');//
+            option.setAttribute('value', db.objectStoreNames[i]);
+            option.textContent =  db.objectStoreNames[i];
+            selectDbStores[0].appendChild(option); 
+
+            //получение категорий(полей) хранилища для <select>
+            var categories = db.transaction(selectDbStores[0].value)
+              .objectStore(selectDbStores[0].value).indexNames;
+            for(var j in categories){
+              if( j >= 0 && db.objectStoreNames[i] == selectDbStores[0].value){              
+                var option = document.createElement('option');//
+                option.setAttribute('value', categories[j]);
+                option.textContent =  categories[j];
+                selectStoreCategories[0].appendChild(option);//               
+              }
+            }
+          
+          } 
+        }       
+       ////////////////////////////////
+
        DB_VERSION = this.result.version;
        console.log("openDb DONE");
      };
-     
+
      req.onerror = function (evt) {
        console.error("openDb:", evt.target.errorCode);
      };
@@ -73,12 +103,14 @@
    //
    //добарить новое хранилище
    function createNewStore() {
-      db.close();    
+      db.close(); 
+       
       var req = indexedDB.open(DB_NAME, DB_VERSION+1);     
       req.onsuccess = function (evt) {
         db = this.result;
         console.log("openDb DONE");
       };
+
       DB_VERSION = db.version;
       req.onupgradeneeded = function (evt) {
         DB_VERSION += 1;
@@ -114,7 +146,7 @@
       };
 
   }   
-  
+
   //добавить категорию(поле)
   function addCategory(){
     newCategoryObj[newCategory[0].value] = uniqueCategory[0].value;//
@@ -137,6 +169,47 @@
     alert(str);  
   }
 
+  //выбрать хранилище
+  // function selectStore(){
+  //   var stores ={};
+  //   for(i in db.objectStoreNames){
+  //     stores[i] = db.objectStoreNames[i];
+  //   }
+
+  // }
+
+  //получение категорий(полей) хранилища для <select>
+  function getStoreCat(){
+    var req = indexedDB.open(DB_NAME);//, DB_VERSION
+    req.onsuccess = function (evt) {
+      db = this.result;
+
+          //удаление старых <option>
+          var oldOptionsCount = selectStoreCategories[0].childNodes.length;
+          for(var i = 0; i < oldOptionsCount; i++){
+              selectStoreCategories[0].removeChild(selectStoreCategories[0].childNodes[0]);
+          }
+          
+           //получение категорий(полей) хранилища для <select>
+           var categories = db.transaction(selectDbStores[0].value)
+             .objectStore(selectDbStores[0].value).indexNames;
+           for(var j in categories){
+             if( j >= 0){              
+               var option = document.createElement('option');//
+               option.setAttribute('value', categories[j]);
+               option.textContent =  categories[j];
+               selectStoreCategories[0].appendChild(option);//               
+             }
+           }
+  
+      ////////////////////////////////
+
+      DB_VERSION = this.result.version;
+      console.log("openDb DONE");
+    };
+  }
+
+  /////////////////////////////////////////////////////////////// 
   //обработчики событий
   function addEventListeners(){
     
@@ -154,6 +227,10 @@
     
     //обработка предпросмотр структуры хранилища
     btnPreview.addEventListener("click", storePreview);        
+
+    //обработка выбрать хранилище
+    btnSelectStore.addEventListener("click", getStoreCat);  
+
 
   }
 

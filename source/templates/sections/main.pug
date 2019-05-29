@@ -12,7 +12,7 @@ section.form-section
             button(type="button").button.btn_addNewCat добавить            
             button(type="button").button.btn_delNewCat удалить               
             br
-            button(type="button").button.btn_createNewStore создать 
+            button(type="submit").button.btn_createNewStore создать 
             button(type="button").button.btn_deleteStore удалить 
             button(type="button").button.btn_preview предпросмотр            
             br
@@ -20,11 +20,12 @@ section.form-section
             label(for="") использование БД
             br
             label(for="") Выбрать хранилище
-            select(name="pathDbTheme", placeholder="Путь к теме базы")
+            select(name="dbStores", placeholder="Хранилища базы")
+            button(type="button").button.btn_selectStore выбрать              
             br 
             br           
             label(for="") Выбрать категорию(поле)           
-            select(name="pathDbTheme", placeholder="Путь к теме базы")
+            select(name="storeCategories", placeholder="Категории хранилища")
             br            
             textarea(name="newData", placeholder='Вставь новые данные сюда')
             br
