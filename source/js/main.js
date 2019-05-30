@@ -27,7 +27,12 @@
    var btnAddNewDate = document.querySelector('.btn_add_new_date');    
    var btnPreviewNewData = document.querySelector('.btn_preview_new_data');     
    var btnPushNewDate = document.querySelector('.btn_push_new_date'); 
+   var textAreaOldData = document.getElementsByName('oldData');
+   var btnChangeDate = document.querySelector('.btn_change_date'); 
+   var btnDeleteDate = document.querySelector('.btn_delete_date'); 
 
+
+   
    //var jsonDataDB = JSON.parse(base);
 
    var sendDataJsonDb = {};
@@ -245,6 +250,60 @@
     };
   }
 
+  //изменение данных
+  function changeData(){
+    var req = indexedDB.open(DB_NAME);//, DB_VERSION
+    req.onsuccess = function (evt) {
+      db = this.result;
+      var cur = db.transaction(selectDbStores[0].value, "readwrite")
+        .objectStore(selectDbStores[0].value).openCursor();
+      cur.onsuccess = function(e){
+          var cursor = e.target.result;
+          if(cursor){
+
+            if(cursor.value[selectStoreCategories[0]
+              .value] === textAreaOldData[0].value.trim()){
+
+              var updateData = cursor.value;
+              updateData[selectStoreCategories[0]
+              .value] = textAreaNewData[0].value.trim();
+
+              var request = cursor.update(updateData);
+              // request.onsuccess = function(){
+              //   console.log('aaaa');
+              // };
+
+            }
+            cursor.continue();
+          } 
+      }
+     
+    };
+
+  }
+
+  //удаление данных из хранилища
+  function removeData(){
+    var req = indexedDB.open(DB_NAME);//, DB_VERSION
+    req.onsuccess = function (evt) {
+      db = this.result;
+
+      var cur = db.transaction(selectDbStores[0].value, "readwrite")
+        .objectStore(selectDbStores[0].value).openCursor();
+      cur.onsuccess = function(e){
+          var cursor = e.target.result;
+          if(cursor){
+            if(cursor.value[selectStoreCategories[0]
+              .value] === textAreaOldData[0].value.trim()){
+ 
+              cursor.delete();
+            }
+            cursor.continue();
+          } 
+      }
+     
+    };
+  }
 
 
 
@@ -291,7 +350,12 @@
     //обработка добавление новых данных в объект данных
     btnPushNewDate.addEventListener("click", sendData);
 
+    //обработка изменение старых данных в хранилище
+    btnChangeDate.addEventListener("click", changeData);
 
+    //обработка изменение старых данных в хранилище
+    btnDeleteDate.addEventListener("click", removeData);
+    
 
    //////////////////////////////////////////////////////
    //кнопки
