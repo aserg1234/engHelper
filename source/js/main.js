@@ -23,15 +23,16 @@
    var selectDbStores = document.getElementsByName('dbStores');
    var btnSelectStore = document.querySelector('.btn_selectStore');
    var selectStoreCategories = document.getElementsByName('storeCategories');
-   
-  //  var dataNewForDb = document.getElementsByName('newData');
-  //  var dataOldFromDb = document.getElementsByName('oldData');
-  //  var dataDecisionForDb = document.getElementsByName('decisionData');
+   var textAreaNewData = document.getElementsByName('newData');
+   var btnAddNewDate = document.querySelector('.btn_add_new_date');    
+   var btnPreviewNewData = document.querySelector('.btn_preview_new_data');     
+   var btnPushNewDate = document.querySelector('.btn_push_new_date'); 
 
    //var jsonDataDB = JSON.parse(base);
 
    var sendDataJsonDb = {};
    var enterDataJsonDb = {};
+    
 
    ////////////////////////////////////////////////////
    //
@@ -42,6 +43,7 @@
    var dbStoreName = '';
    var db;
    var newCategoryObj = {};
+   var newDataObj = {};
    var objStores ={};
    var str = '';
    var current_view_pub_key;
@@ -93,9 +95,9 @@
        var store = thisDB.createObjectStore(
          DB_BASIC_STORE_NAME, { keyPath: 'id', autoIncrement: true });
    
-         store.createIndex('biblioid', 'biblioid', { unique: true });
-         store.createIndex('title', 'title', { unique: false });
-         store.createIndex('year', 'year', { unique: false });
+         store.createIndex('words', 'words', { unique: true });
+         store.createIndex('translate', 'translate', { unique: false });
+         store.createIndex('date', 'date', { unique: false });
        }
      };
 
@@ -150,6 +152,9 @@
   //добавить категорию(поле)
   function addCategory(){
     newCategoryObj[newCategory[0].value] = uniqueCategory[0].value;//
+    newCategory[0].value = '';
+    uniqueCategory[0].value = '';
+    
   }
 
   //удалить категорию(поле)
@@ -209,6 +214,51 @@
     };
   }
 
+  //
+  function addNewDate(){
+    newDataObj[selectStoreCategories[0].value] = textAreaNewData[0].value.trim();//
+    textAreaNewData[0].value = '';
+
+  }
+  //предпросмотр добавляемых данных(объект) в хранилище
+  function dataObjPreview(){
+
+    var str = '';
+    for(var  i in newDataObj){
+      str += i + " : " + newDataObj[i] + " \n";
+
+    }  
+    console.dir(newDataObj);  
+  }
+
+  //добавление данных в хранилище
+  function sendData(){
+    var req = indexedDB.open(DB_NAME);//, DB_VERSION
+    req.onsuccess = function (evt) {
+      db = this.result;
+
+          //добавление данных категорий(полей) в хранилище
+           db.transaction(selectDbStores[0].value, "readwrite")
+             .objectStore(selectDbStores[0].value).add(newDataObj);
+      ////////////////////////////////
+
+    };
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /////////////////////////////////////////////////////////////// 
   //обработчики событий
   function addEventListeners(){
@@ -231,8 +281,17 @@
     //обработка выбрать хранилище
     btnSelectStore.addEventListener("click", getStoreCat);  
 
+    //обработка добавление новых данных в объект данных
+    btnAddNewDate.addEventListener("click", addNewDate);
+
+    //обработка предпросмотр структуры объекта добавляемых данных
+    btnPreviewNewData.addEventListener("click", dataObjPreview);     
 
   }
+    //обработка добавление новых данных в объект данных
+    btnPushNewDate.addEventListener("click", sendData);
+
+
 
    //////////////////////////////////////////////////////
    //кнопки

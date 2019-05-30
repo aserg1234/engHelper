@@ -29,12 +29,16 @@ section.form-section
             br            
             textarea(name="newData", placeholder='Вставь новые данные сюда')
             br
-            button(type='submit').button.btn_new_date добавить данные
+            button(type='button').button.btn_add_new_date добавить данные
+            button(type='submit').button.btn_push_new_date отправить данные 
+            button(type="button").button.btn_preview_new_data предпросмотр            
             br
             label(for="") изменить старые данные
             br
             textarea(name="oldData", placeholder='Вставь старые данные сюда')
-            button(type='submit').button.btn_old_date Изменить данные
+            br
+            button(type='button').button.btn_old_date Изменить данные
+            button(type='submit').button.btn_push_new_date отправить данные             
         p задание
         form.form.form_request_data
             button(type='submit').button.btn_exercise_date получить случайное задание
