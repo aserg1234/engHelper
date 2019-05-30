@@ -215,7 +215,7 @@
   }
 
   //
-  function addNewDate(){
+  function addNewData(){
     newDataObj[selectStoreCategories[0].value] = textAreaNewData[0].value.trim();//
     textAreaNewData[0].value = '';
 
@@ -282,7 +282,7 @@
     btnSelectStore.addEventListener("click", getStoreCat);  
 
     //обработка добавление новых данных в объект данных
-    btnAddNewDate.addEventListener("click", addNewDate);
+    btnAddNewDate.addEventListener("click", addNewData);
 
     //обработка предпросмотр структуры объекта добавляемых данных
     btnPreviewNewData.addEventListener("click", dataObjPreview);     
