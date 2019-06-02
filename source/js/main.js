@@ -24,14 +24,16 @@
    var btnSelectStore = document.querySelector('.btn_selectStore');
    var selectStoreCategories = document.getElementsByName('storeCategories');
    var textAreaNewData = document.getElementsByName('newData');
-   var btnAddNewDate = document.querySelector('.btn_add_new_date');    
+   var btnAddNewData = document.querySelector('.btn_add_new_data');    
    var btnPreviewNewData = document.querySelector('.btn_preview_new_data');     
-   var btnPushNewDate = document.querySelector('.btn_push_new_date'); 
+   var btnPushNewData = document.querySelector('.btn_push_new_data'); 
    var textAreaOldData = document.getElementsByName('oldData');
-   var btnChangeDate = document.querySelector('.btn_change_date'); 
-   var btnDeleteDate = document.querySelector('.btn_delete_date'); 
+   var btnChangeData = document.querySelector('.btn_change_data'); 
+   var btnDeleteData = document.querySelector('.btn_delete_data'); 
    var btnDataFromFile = document.querySelector('input[type=file]');
-   var btnSaveDataToFile = document.querySelector('.btn_save_data_to_file'); 
+   var btnSaveDataToFile = document.querySelector('.btn_save_data_to_file');
+   var btnThemeData = document.querySelector('.btn_theme_data');   
+   
    //
    
    
@@ -460,22 +462,22 @@
     btnSelectStore.addEventListener("click", getStoreCat);  
 
     //обработка добавление новых данных в объект данных
-    btnAddNewDate.addEventListener("click", addNewData);
+    btnAddNewData.addEventListener("click", addNewData);
 
     //обработка предпросмотр структуры объекта добавляемых данных
     btnPreviewNewData.addEventListener("click", dataObjPreview);     
 
   }
     //обработка добавление новых данных в объект данных
-    btnPushNewDate.addEventListener("click", function(){
+    btnPushNewData.addEventListener("click", function(){
       sendData(newDataObj);
     });
 
     //обработка изменение старых данных в хранилище
-    btnChangeDate.addEventListener("click", changeData);
+    btnChangeData.addEventListener("click", changeData);
 
     //обработка изменение старых данных в хранилище
-    btnDeleteDate.addEventListener("click", removeData);
+    btnDeleteData.addEventListener("click", removeData);
     
     //обработка прочитать данные из файла и отправить в хранилище
     btnDataFromFile.addEventListener("change", readOwnFile);
@@ -483,8 +485,8 @@
     //обработка сохранить данные для файла
     btnSaveDataToFile.addEventListener("click", saveDataForFile);
 
-    //обработка отправить данные в файл
-    //aSendDataToFile.addEventListener("click", sendDataToFile);
+    //обработка получить тематическое задание
+    btnThemeData.addEventListener("click", getThemeData);
 
    //////////////////////////////////////////////////////
 
