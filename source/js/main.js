@@ -31,8 +31,11 @@
    var btnChangeDate = document.querySelector('.btn_change_date'); 
    var btnDeleteDate = document.querySelector('.btn_delete_date'); 
    var btnDataFromFile = document.querySelector('input[type=file]');
-   //var btnDataFromFile = document.querySelector('.btn_take_data_from_file');//.files[0] 
+   var btnSaveDataToFile = document.querySelector('.btn_save_data_to_file'); 
+   //
    
+   
+
    //var jsonDataDB = JSON.parse(base);
 
    var sendDataJsonDb = {};
@@ -339,6 +342,7 @@
           //очищенная одна запись(объект) готовая к отправке          
           cleanNoteObj[arrOneFieldNew[0]] = arrOneFieldNew[1];
           
+          //проверка файла на корректность
           if( i == 0 && !checkDataFromFile(arrOneFieldNew[0]) ) {
             alert('днанные в файле не подходят для выбранного хранилища');
             return;
@@ -378,6 +382,58 @@
       return  false;    
     }
     return true;
+  }
+
+  //сохранить хранилище в файл
+  function saveDataForFile(){
+  
+    var req = indexedDB.open(DB_NAME);//, DB_VERSION
+    
+    var fileStr = '';
+
+    var aSendDataToFile = document.querySelector('.a_send_file');
+
+    req.onsuccess = function (evt) {
+
+      db = this.result;
+
+      var cur = db.transaction(selectDbStores[0].value, "readwrite")
+        .objectStore(selectDbStores[0].value).openCursor();
+      
+      cur.onsuccess = function(e){
+          
+          var cursor = e.target.result;
+          
+          if(cursor){
+
+            fileStr += JSON.stringify(cursor.value);
+       
+            cursor.continue();
+
+          }else{
+
+           var textObj = new Blob([fileStr], { type: 'text/plain' } );  
+          console.dir(fileStr);          
+            aSendDataToFile.href = URL.createObjectURL(textObj);
+            var date = new Date();
+
+            var day = date.getDate();
+            if(day <10) day = '0'+day;
+            
+            var month = date.getMonth();
+            if(month<10) month = '0'+ month;
+
+            var year = date.getFullYear();
+        
+            aSendDataToFile.download = "" + selectDbStores[0].value + "_" +
+            day + "." + month + "." + year + ".txt";
+            window.URL.revokeObjectURL(textObj);
+          }
+          
+      }
+
+    }; 
+
   }
 
 
@@ -421,11 +477,14 @@
     //обработка изменение старых данных в хранилище
     btnDeleteDate.addEventListener("click", removeData);
     
-    //обработка прочитать данные из файта
+    //обработка прочитать данные из файла и отправить в хранилище
     btnDataFromFile.addEventListener("change", readOwnFile);
 
+    //обработка сохранить данные для файла
+    btnSaveDataToFile.addEventListener("click", saveDataForFile);
 
-
+    //обработка отправить данные в файл
+    //aSendDataToFile.addEventListener("click", sendDataToFile);
 
    //////////////////////////////////////////////////////
 
