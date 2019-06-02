@@ -52,11 +52,18 @@ section.form-section
 
         p задание
         form.form.form_request_data
+            br           
+            label(for="") Выбрать категорию заданий           
+            select(name="catForTask")
+            br
             button(type='submit').button.btn_exercise_data получить случайное задание
-            button(type='submit').button.btn_theme_data тематическое задание
+            button(type='button').button.btn_theme_data тематическое задание
             .request_data_exercise
             //- здесь будет выводится задание
+
             textarea(name='decisionData' placeholder='вставь сюда свое решение')
-            button( type='submit').button.btn_submit_decision отправить решение
+            button( type='button').button.btn_submit_decision отправить решение
+            .answer_data.hidden sasadd
             .result_data
+
             //- здесь будет выводится результат

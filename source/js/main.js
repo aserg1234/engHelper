@@ -35,7 +35,7 @@
    var btnThemeData = document.querySelector('.btn_theme_data');   
    
    //
-   
+    var btnSubmitDecision = document.querySelector('.btn_submit_decision');    
    
 
    //var jsonDataDB = JSON.parse(base);
@@ -101,7 +101,7 @@
       var thisDB = evt.target.result;
       if (!thisDB.objectStoreNames.contains(DB_BASIC_STORE_NAME)) {
        var store = thisDB.createObjectStore(
-         DB_BASIC_STORE_NAME, { keyPath: 'id', autoIncrement: true });
+         DB_BASIC_STORE_NAME, { keyPath: 'basicStore_Id', autoIncrement: true });
 
          store.createIndex('theme', 'theme', { unique: false });   
          store.createIndex('speciality', 'speciality', { unique: false });            
@@ -130,7 +130,7 @@
         var thisDB = evt.target.result;
         //if (!thisDB.objectStoreNames.contains(inpStore[0].value)) {
         var store = thisDB.createObjectStore(
-          inpStore[0].value, { keyPath: 'id', autoIncrement: true });
+          inpStore[0].value, { keyPath: inpStore[0].value+'id', autoIncrement: true });
 
         for(var i in newCategoryObj){
           if(newCategoryObj[i] == 'true') newCategoryObj[i] = true;
@@ -189,6 +189,9 @@
 
   //получение категорий(полей) хранилища для <select>
   function getStoreCat(){
+
+    var taskCategory = document.getElementsByName('catForTask');
+
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
     req.onsuccess = function (evt) {
       db = this.result;
@@ -205,9 +208,16 @@
            for(var j in categories){
              if( j >= 0){              
                var option = document.createElement('option');//
+               var option2 = document.createElement('option');//
+
                option.setAttribute('value', categories[j]);
                option.textContent =  categories[j];
-               selectStoreCategories[0].appendChild(option);//               
+
+               option2.setAttribute('value', categories[j]);
+               option2.textContent =  categories[j];
+
+               selectStoreCategories[0].appendChild(option);//   
+               taskCategory[0].appendChild(option2);     
              }
            }
   
@@ -245,6 +255,9 @@
            db.transaction(selectDbStores[0].value, "readwrite")
              .objectStore(selectDbStores[0].value).add(obj);
       ////////////////////////////////
+    
+      //необх добавить переиндексирование хранилища
+
 
     };
   }
@@ -300,7 +313,7 @@
             cursor.continue();
           } 
       }
-     
+      //необх добавить переиндексирование хранилища     
     };
   }
 
@@ -350,9 +363,6 @@
             return;
           }      
         }
-
-        //
-
         //отправка записи(объекта) в базу данных
         sendData(cleanNoteObj);
          
@@ -365,8 +375,6 @@
     } else {
 
     }
-
-    
   }
   //сравнение ключей файла с категориями базы (только для функции readOwnFile)
   function checkDataFromFile(cat){
@@ -438,6 +446,60 @@
 
   }
 
+  //получение тематического задания
+  function getThemeData(){
+  
+    var req = indexedDB.open(DB_NAME);//, DB_VERSION
+    
+    var fileStr = '';
+
+    var taskCategory = document.getElementsByName('catForTask')[0].value;
+    var dataTask = document.querySelector('.request_data_exercise');
+    var answerData = document.querySelector('.answer_data');
+
+
+    req.onsuccess = function (evt) {
+
+      db = this.result;
+
+      var cur = db.transaction(selectDbStores[0].value, "readwrite")
+        .objectStore(selectDbStores[0].value).openCursor();
+      
+      cur.onsuccess = function(e){
+
+          var cursor = e.target.result;
+          
+          if(cursor){
+
+            var data = cursor.value;            
+
+            dataTask.textContent = data[taskCategory];
+ 
+            if(taskCategory == 'words')
+
+               answerData.textContent = cursor.value.translate; 
+
+            else answerData.textContent = cursor.value.words;    
+
+          }else{
+
+          }
+          console.log(fileStr);
+      }
+
+    }; 
+  }
+
+  function sendDecision(){
+
+    var decisionData = document.getElementsByName('decisionData')[0];
+    var answerData = document.querySelector('.answer_data');  
+    answerData.classList.remove('hidden');
+    var resultData = document.querySelector('.result_data');
+
+    resultData.textContent = decisionData.value;
+
+  }
 
   /////////////////////////////////////////////////////////////// 
   //обработчики событий
@@ -487,6 +549,11 @@
 
     //обработка получить тематическое задание
     btnThemeData.addEventListener("click", getThemeData);
+
+
+
+    //обработка отправить решение
+    btnSubmitDecision.addEventListener("click", sendDecision);    
 
    //////////////////////////////////////////////////////
 
