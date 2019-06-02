@@ -128,7 +128,10 @@
           inpStore[0].value, { keyPath: 'id', autoIncrement: true });
 
         for(var i in newCategoryObj){
-          store.createIndex( i, i, { unique: newCategoryObj[i] });
+          if(newCategoryObj[i] == 'true') newCategoryObj[i] = true;
+          else if(newCategoryObj[i] == 'false')  newCategoryObj[i] = false;
+
+          store.createIndex( i, i, { unique:  newCategoryObj[i] } );
         }
 
       };
@@ -326,7 +329,6 @@
 
           //массив ключ[0], значение[1]
           var arrOneFieldNew = [];
-          
           //итерация очищения всех лишних пробелов(на ключах и значениях)
           for(var k = 0; k < 2; k++){
             
