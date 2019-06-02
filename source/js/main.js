@@ -338,15 +338,20 @@
 
           //очищенная одна запись(объект) готовая к отправке          
           cleanNoteObj[arrOneFieldNew[0]] = arrOneFieldNew[1];
-                   
+          
+          if( i == 0 && !checkDataFromFile(arrOneFieldNew[0]) ) {
+            alert('днанные в файле не подходят для выбранного хранилища');
+            return;
+          }      
         }
+
+        //
 
         //отправка записи(объекта) в базу данных
         sendData(cleanNoteObj);
          
       }
- console.dir(cleanNoteObj);     
-
+ 
     }
 
     if (file) {
@@ -354,8 +359,26 @@
     } else {
 
     }
-  }
 
+    
+  }
+  //сравнение ключей файла с категориями базы (только для функции readOwnFile)
+  function checkDataFromFile(cat){
+    var storeCategories = document.getElementsByName('storeCategories')[0].children;
+    
+    var count = 0;
+    for(i = 0; i < storeCategories.length; i++){
+
+      if(cat == storeCategories[i].value){
+        count++;
+      }
+    }
+
+    if(!count){
+      return  false;    
+    }
+    return true;
+  }
 
 
   /////////////////////////////////////////////////////////////// 
