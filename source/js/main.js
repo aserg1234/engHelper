@@ -30,8 +30,8 @@
    var textAreaOldData = document.getElementsByName('oldData');
    var btnChangeDate = document.querySelector('.btn_change_date'); 
    var btnDeleteDate = document.querySelector('.btn_delete_date'); 
-
-
+   var btnDataFromFile = document.querySelector('input[type=file]');
+   //var btnDataFromFile = document.querySelector('.btn_take_data_from_file');//.files[0] 
    
    //var jsonDataDB = JSON.parse(base);
 
@@ -49,9 +49,7 @@
    var db;
    var newCategoryObj = {};
    var newDataObj = {};
-   var objStores ={};
-   var str = '';
-   var current_view_pub_key;
+   var newDataFromFileObl ={};
 
    //создание базы данных и базового хранилища + создание списка хранилищ
    function openDb() {
@@ -99,10 +97,12 @@
       if (!thisDB.objectStoreNames.contains(DB_BASIC_STORE_NAME)) {
        var store = thisDB.createObjectStore(
          DB_BASIC_STORE_NAME, { keyPath: 'id', autoIncrement: true });
-   
-         store.createIndex('words', 'words', { unique: true });
+
+         store.createIndex('theme', 'theme', { unique: false });   
+         store.createIndex('speciality', 'speciality', { unique: false });            
+         store.createIndex('words', 'words', { unique: false });
          store.createIndex('translate', 'translate', { unique: false });
-         store.createIndex('date', 'date', { unique: false });
+         //store.createIndex('date', 'date', { unique: false });
        }
      };
 
@@ -179,15 +179,6 @@
     alert(str);  
   }
 
-  //выбрать хранилище
-  // function selectStore(){
-  //   var stores ={};
-  //   for(i in db.objectStoreNames){
-  //     stores[i] = db.objectStoreNames[i];
-  //   }
-
-  // }
-
   //получение категорий(полей) хранилища для <select>
   function getStoreCat(){
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
@@ -212,7 +203,7 @@
              }
            }
   
-      ////////////////////////////////
+      //////////
 
       DB_VERSION = this.result.version;
       console.log("openDb DONE");
@@ -237,14 +228,14 @@
   }
 
   //добавление данных в хранилище
-  function sendData(){
+  function sendData(obj){
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
     req.onsuccess = function (evt) {
       db = this.result;
 
           //добавление данных категорий(полей) в хранилище
            db.transaction(selectDbStores[0].value, "readwrite")
-             .objectStore(selectDbStores[0].value).add(newDataObj);
+             .objectStore(selectDbStores[0].value).add(obj);
       ////////////////////////////////
 
     };
@@ -305,16 +296,63 @@
     };
   }
 
+  //чтение файла и отправка записей в БД
+  //учитывать допустимое колво итераций в браузере
+  //если проблема--то сделать счетчик на каждом цикле
+  //считающий все итерации--на макс - преостановка и далее...  
+  function readOwnFile(){
+    var file = document.querySelector('input[type=file]').files[0];	
+    var reader = new FileReader();
+    
 
+    reader.onloadend = function () {
 
+      //массив записей(не очищен)
+      var textToArr = reader.result;  
+      textToArr = textToArr.split(';');
 
+      for(var i=0; i<textToArr.length; i++){
 
+        //поля одного объекта и значения
+        var objFields = textToArr[i].split('|'); 
 
+        //объект для сохр новой(чистой) записи
+        var cleanNoteObj = {};
+    
+        for(var j = 0; j < objFields.length; j++){
 
+          //одно поле и значение
+          var oneField = objFields[j].split(":");
 
+          //массив ключ[0], значение[1]
+          var arrOneFieldNew = [];
+          
+          //итерация очищения всех лишних пробелов(на ключах и значениях)
+          for(var k = 0; k < 2; k++){
+            
+            arrOneFieldNew[k] = oneField[k].trim();
 
+          }
 
+          //очищенная одна запись(объект) готовая к отправке          
+          cleanNoteObj[arrOneFieldNew[0]] = arrOneFieldNew[1];
+                   
+        }
 
+        //отправка записи(объекта) в базу данных
+        sendData(cleanNoteObj);
+         
+      }
+ console.dir(cleanNoteObj);     
+
+    }
+
+    if (file) {
+      reader.readAsText(file, 'utf-8');
+    } else {
+
+    }
+  }
 
 
 
@@ -348,7 +386,9 @@
 
   }
     //обработка добавление новых данных в объект данных
-    btnPushNewDate.addEventListener("click", sendData);
+    btnPushNewDate.addEventListener("click", function(){
+      sendData(newDataObj);
+    });
 
     //обработка изменение старых данных в хранилище
     btnChangeDate.addEventListener("click", changeData);
@@ -356,48 +396,13 @@
     //обработка изменение старых данных в хранилище
     btnDeleteDate.addEventListener("click", removeData);
     
+    //обработка прочитать данные из файта
+    btnDataFromFile.addEventListener("change", readOwnFile);
+
+
+
 
    //////////////////////////////////////////////////////
-   //кнопки
-  //  var btnNewDate = document.querySelector('.btn_new_date');
-  //  btnNewDate.addEventListener('click', sendNewDataInDB);
-
-  //  var btnOldDate = document.querySelector('.btn_old_date');
-  //  btnOldDate.addEventListener('click', sendChangeDataInDB);
-
-  //  var btnExerciseDate = document.querySelector('.btn_exercise_date');
-  //  btnExerciseDate.addEventListener('click', getRandExercise);
-
-  //  var btnThemeDate = document.querySelector('.btn_theme_date');
-  //  btnThemeDate.addEventListener('click', getThemeExercise);
-
-  //  var btnSubmitDecision = document.querySelector('.btn_submit_decision');
-  //  btnSubmitDecision.addEventListener('click', sendDecision);
-
-
-  //  /////////////////////////////////////////////////
- 
-  //  function sendNewDataInDB(){
-
-  //     // alert('sendNewDataInDB');
-  //  }
-
-  //  function sendChangeDataInDB(){
-
-  //  }
-
-  //  function getRandExercise(){
-
-  //  }
-
-  //  function getThemeExercise(){
-
-  //  }
-
-  //  function sendDecision(){
-
-  //  }
-
 
    openDb();
    addEventListeners();

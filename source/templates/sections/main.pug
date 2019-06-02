@@ -26,7 +26,16 @@ section.form-section
             br           
             label(for="") Выбрать категорию(поле)           
             select(name="storeCategories", placeholder="Категории хранилища")
-            br            
+            br
+            br
+            label(for="") взять из файла
+            input(type='file').choose_file 
+            br   
+            br
+            label(for="") отправить в файл
+            button(type="button").button.btn_send_data_to_file отправить в файл                            
+            br
+            br
             textarea(name="newData", placeholder='Вставь новые данные сюда')
             br
             button(type='button').button.btn_add_new_date добавить данные
@@ -38,7 +47,6 @@ section.form-section
             textarea(name="oldData", placeholder='Вставь старые данные сюда')
             br
             button(type='button').button.btn_change_date Изменить данные
-            button(type='submit').button.btn_push_new_date отправить данные 
             button(type='submit').button.btn_delete_date удалить данные             
 
         p задание
