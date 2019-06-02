@@ -101,7 +101,7 @@
       var thisDB = evt.target.result;
       if (!thisDB.objectStoreNames.contains(DB_BASIC_STORE_NAME)) {
        var store = thisDB.createObjectStore(
-         DB_BASIC_STORE_NAME, { keyPath: 'basicStore_Id', autoIncrement: true });
+         DB_BASIC_STORE_NAME, { keyPath: 'basicStore_id', autoIncrement: true });
 
          store.createIndex('theme', 'theme', { unique: false });   
          store.createIndex('speciality', 'speciality', { unique: false });            
@@ -130,7 +130,7 @@
         var thisDB = evt.target.result;
         //if (!thisDB.objectStoreNames.contains(inpStore[0].value)) {
         var store = thisDB.createObjectStore(
-          inpStore[0].value, { keyPath: inpStore[0].value+'id', autoIncrement: true });
+          inpStore[0].value, { keyPath: inpStore[0].value+'_id', autoIncrement: true });
 
         for(var i in newCategoryObj){
           if(newCategoryObj[i] == 'true') newCategoryObj[i] = true;
@@ -251,13 +251,24 @@
     req.onsuccess = function (evt) {
       db = this.result;
 
-          //добавление данных категорий(полей) в хранилище
-           db.transaction(selectDbStores[0].value, "readwrite")
-             .objectStore(selectDbStores[0].value).add(obj);
-      ////////////////////////////////
-    
-      //необх добавить переиндексирование хранилища
+      var objectStore  = db.transaction(selectDbStores[0].value, "readonly")
+      .objectStore(selectDbStores[0].value);
 
+      var storeRange = 0;
+      var countRquest = objectStore.count();
+
+        countRquest.onsuccess = function(){
+
+        storeRange = countRquest.result;
+          console.log(storeRange);
+
+      }
+
+
+      
+      //добавление данных категорий(полей) в хранилище
+      db.transaction(selectDbStores[0].value, "readwrite")
+        .objectStore(selectDbStores[0].value).add(obj);  
 
     };
   }
@@ -296,24 +307,42 @@
 
   //удаление данных из хранилища
   function removeData(){
+
+    var newCounter = 1;
+
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
+    
     req.onsuccess = function (evt) {
       db = this.result;
-
+      
       var cur = db.transaction(selectDbStores[0].value, "readwrite")
-        .objectStore(selectDbStores[0].value).openCursor();
+        .objectStore(selectDbStores[0].value).openCursor(); 
+
+      var str = '';
+        
       cur.onsuccess = function(e){
           var cursor = e.target.result;
+
           if(cursor){
+
+       
             if(cursor.value[selectStoreCategories[0]
               .value] === textAreaOldData[0].value.trim()){
- 
+                
               cursor.delete();
+
             }
+            //переиндексирую поле id элемента
+            cursor.value[selectDbStores[0].value+'_id'] = newCounter++;
+
+            // str += cursor.value.words + ": " +  cursor.value[selectDbStores[0].value+'_id'] + "; ";
+            console.dir(cursor);
             cursor.continue();
-          } 
+          }else{
+
+          }
       }
-      //необх добавить переиндексирование хранилища     
+    
     };
   }
 
@@ -462,6 +491,24 @@
 
       db = this.result;
 
+      //количество записей в базе
+      var objectStore  = db.transaction(selectDbStores[0].value, "readonly")
+      .objectStore(selectDbStores[0].value);
+
+      var storeRange = 0;
+      var randId;
+
+      var countRquest = objectStore.count();
+
+      countRquest.onsuccess = function(){
+
+      storeRange = countRquest.result;
+        console.log("количество записей в хранилище: " + storeRange);
+
+        randId = chooseRandTask(storeRange);
+      }
+      
+      //курсор поиск задания
       var cur = db.transaction(selectDbStores[0].value, "readwrite")
         .objectStore(selectDbStores[0].value).openCursor();
       
@@ -471,25 +518,43 @@
           
           if(cursor){
 
-            var data = cursor.value;            
+            var data = cursor.value;    
 
-            dataTask.textContent = data[taskCategory];
- 
-            if(taskCategory == 'words')
+            if(cursor.value[selectDbStores[0].value+'_id'] == randId){
+              dataTask.textContent = data[taskCategory];
+              // console.dir(data[taskCategory] + "; рэнд = " +  randId);
+              // console.dir(cursor.value[selectDbStores[0].value+'_id']);
+              if(taskCategory == 'words')
 
-               answerData.textContent = cursor.value.translate; 
+                answerData.textContent = cursor.value.translate; 
 
-            else answerData.textContent = cursor.value.words;    
+              else answerData.textContent = cursor.value.words;
+
+            }
+
+              cursor.continue();
 
           }else{
 
           }
-          console.log(fileStr);
+          //console.log(fileStr);
       }
 
     }; 
+    hideDecision();
   }
 
+  //
+  function chooseRandTask(max){
+
+      var rand = 1 - 0.5 + Math.random() * (max - 1 + 1)
+      rand = Math.round(rand); 
+
+      //console.log(rand);
+
+      return rand;
+  }
+  //
   function sendDecision(){
 
     var decisionData = document.getElementsByName('decisionData')[0];
@@ -499,6 +564,11 @@
 
     resultData.textContent = decisionData.value;
 
+  }
+  //
+  function hideDecision(){
+    var answerData = document.querySelector('.answer_data');  
+    answerData.classList.add('hidden');    
   }
 
   /////////////////////////////////////////////////////////////// 
