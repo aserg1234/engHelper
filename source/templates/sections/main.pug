@@ -48,7 +48,7 @@ section.form-section
             textarea(name="oldData", placeholder='Вставь старые данные сюда')
             br
             button(type='button').button.btn_change_data Изменить данные
-            button(type='button').button.btn_delete_data удалить данные             
+            button(type='submit').button.btn_delete_data удалить данные             
 
         p задание
         form.form.form_request_data
@@ -56,7 +56,7 @@ section.form-section
             label(for="") Выбрать категорию заданий           
             select(name="catForTask")
             br
-            button(type='submit').button.btn_exercise_data получить случайное задание
+            button(type='button').button.btn_exercise_data получить случайное задание
             button(type='button').button.btn_theme_data тематическое задание
             .request_data_exercise
             //- здесь будет выводится задание

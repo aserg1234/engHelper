@@ -33,7 +33,7 @@
    var btnDataFromFile = document.querySelector('input[type=file]');
    var btnSaveDataToFile = document.querySelector('.btn_save_data_to_file');
    var btnThemeData = document.querySelector('.btn_theme_data');   
-   
+   var btnExerciseData = document.querySelector('.btn_exercise_data');   
    //
     var btnSubmitDecision = document.querySelector('.btn_submit_decision');    
    
@@ -565,11 +565,111 @@
     resultData.textContent = decisionData.value;
 
   }
+
   //
   function hideDecision(){
     var answerData = document.querySelector('.answer_data');  
     answerData.classList.add('hidden');    
   }
+
+  //получить задание из всей базы(случайно)
+  function getDBExerciseData(randStore){
+
+    var req = indexedDB.open(DB_NAME);//, DB_VERSION
+
+    var randStore = randStore;
+
+    console.log(randStore);    
+
+    var taskCategory = document.getElementsByName('catForTask')[0].value;
+    var dataTask = document.querySelector('.request_data_exercise');
+    var answerData = document.querySelector('.answer_data');
+
+    req.onsuccess = function (evt) {
+
+      db = this.result;
+
+      //количество записей в базе
+      var objectStore  = db.transaction(randStore, "readonly")
+      .objectStore(randStore);
+
+      var storeRange = 0;
+      var randId;
+
+      var countRquest = objectStore.count();
+
+      countRquest.onsuccess = function(){
+
+      storeRange = countRquest.result;
+
+     
+        console.log("количество записей в хранилище: " + storeRange);
+
+        randId = chooseRandTask(storeRange);
+      }
+      
+      //курсор поиск задания
+      var cur = db.transaction(randStore, "readwrite")
+        .objectStore(randStore).openCursor();
+      
+      cur.onsuccess = function(e){
+
+          var cursor = e.target.result;
+          
+          if(cursor){
+
+            var data = cursor.value;    
+
+            if(cursor.value[randStore+'_id'] == randId){
+              dataTask.textContent = data[taskCategory];
+
+              if(taskCategory == 'words')
+
+                answerData.textContent = cursor.value.translate; 
+
+              else answerData.textContent = cursor.value.words;
+
+            }
+
+              cursor.continue();
+
+          }else{
+
+          }
+          //console.log(fileStr);
+      }
+
+    }; 
+    hideDecision();
+  }
+
+  //получить хранилище случайно
+  function getRandomStoreNum(){
+    var randDBStore;
+
+    var req = indexedDB.open(DB_NAME);//, DB_VERSION
+
+    req.onsuccess = function (evt) {
+
+      db = evt.target.result;
+
+      randDBStore = chooseRandTask(db.objectStoreNames.length);//
+      //console.dir(db.objectStoreNames[randDBStore]);
+    }
+
+      var timer = setInterval(function(){
+
+        if(randDBStore !== undefined) {
+          console.log(randDBStore);
+          getDBExerciseData(db.objectStoreNames[randDBStore-1]);
+          clearInterval(timer);
+        }
+      }, 1000);
+   
+  }
+  //getRandomStoreNum();
+
+
 
   /////////////////////////////////////////////////////////////// 
   //обработчики событий
@@ -599,7 +699,7 @@
     //обработка предпросмотр структуры объекта добавляемых данных
     btnPreviewNewData.addEventListener("click", dataObjPreview);     
 
-  }
+  
     //обработка добавление новых данных в объект данных
     btnPushNewData.addEventListener("click", function(){
       sendData(newDataObj);
@@ -620,11 +720,17 @@
     //обработка получить тематическое задание
     btnThemeData.addEventListener("click", getThemeData);
 
-
+    //обработка  получить задание из всей базы
+    btnExerciseData.addEventListener("click", getRandomStoreNum);
 
     //обработка отправить решение
-    btnSubmitDecision.addEventListener("click", sendDecision);    
+    btnSubmitDecision.addEventListener("click", sendDecision);   
 
+
+    
+    
+
+  }
    //////////////////////////////////////////////////////
 
    openDb();
