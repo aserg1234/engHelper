@@ -479,6 +479,10 @@
 
   //получение тематического задания
   function getThemeData(){
+
+    //очищаем поле - старое решение
+    var decisionData = document.getElementsByName('decisionData')[0];
+    decisionData.value = '';
   
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
     
@@ -559,7 +563,9 @@
   //
   function sendDecision(){
 
-    //var decisionData = document.getElementsByName('decisionData')[0];
+    // var decisionData = document.getElementsByName('decisionData')[0];
+    // decisionData.value = '';
+
     var answerData = document.querySelector('.answer_data');  
     answerData.classList.remove('hidden');
     var resultData = document.querySelector('.result_data');
@@ -645,6 +651,11 @@
 
   //получить хранилище случайно
   function getRandomStoreNum(){
+
+    //очищаем поле- прошлое решение
+    var decisionData = document.getElementsByName('decisionData')[0];
+    decisionData.value = '';
+
     var randDBStore;
 
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
