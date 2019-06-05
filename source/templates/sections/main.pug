@@ -1,69 +1,81 @@
 section.form-section
     .container
+        .overlay_create_db
+            a(href="javascript:void(0)").btn_close_create_db &times;
+            
+            .createDB_container
+                form.form.form_create_db
+                    label(for="") Создать хранилище
+                    input(type="text" name="inpStore" placeholder="имя нового хранилища")
+                    
+                    //- label(for="") добавить категорию в хранилище
+                    
+                    input(type="text" name="newCategory" placeholder="категория")
+                    select(name="uniqueCategory" placeholder="уникальность") 
+                        option(value="false") неуникальное имя категории
+                        option(value="true") уникальное имя категории
+                    button(type="button").button.btn_addNewCat добавить категорию            
+                    button(type="button").button.btn_delNewCat удалить категорию              
+                    button(type="button").button.btn_preview предпросмотр                      
+                    button(type="submit").button.btn_createNewStore создать хранилище
+                    button(type="button").button.btn_deleteStore удалить хранилище
+          
+        .overlay_use_db  
+            a(href="javascript:void(0)").btn_close_use_db &times;
 
-        form.form.form_insert_data
-            label(for="") Название хранилища
-            input(type="text" name="inpStore" placeholder="имя нового хранилища")
-            br
-            label(for="") добавить категорию в хранилище
-            br
-            input(type="text" name="newCategory" placeholder="категория")
-            input(type="text" name="uniqueCategory" placeholder="уникальность")            
-            button(type="button").button.btn_addNewCat добавить            
-            button(type="button").button.btn_delNewCat удалить               
-            br
-            button(type="submit").button.btn_createNewStore создать 
-            button(type="button").button.btn_deleteStore удалить 
-            button(type="button").button.btn_preview предпросмотр            
-            br
-            br            
-            label(for="") использование БД
-            br
-            label(for="") Выбрать хранилище
-            select(name="dbStores", placeholder="Хранилища базы")
-            button(type="button").button.btn_selectStore выбрать              
-            br 
-            br           
-            label(for="") Выбрать категорию(поле)           
-            select(name="storeCategories", placeholder="Категории хранилища")
-            br
-            br
-            label(for="") взять из файла
-            input(type='file').choose_file 
-            br   
-            br
-            label(for="") отправить в файл
-            button(type="button").button.btn_save_data_to_file создать файл 
-            a(href="").a_send_file отправить файл                           
-            br
-            br
-            textarea(name="newData", placeholder='Вставь новые данные сюда')
-            br
-            button(type='button').button.btn_add_new_data добавить данные
-            button(type='submit').button.btn_push_new_data отправить данные 
-            button(type="button").button.btn_preview_new_data предпросмотр            
-            br
-            label(for="") изменить старые данные
-            br
-            textarea(name="oldData", placeholder='Вставь старые данные сюда')
-            br
-            button(type='button').button.btn_change_data Изменить данные
-            button(type='submit').button.btn_delete_data удалить данные             
+            .useDB_container       
+                form.form.form_use_db  
+                    p использование БД
+                    
+                    label(for="") Выбрать хранилище
+                    select(name="dbStores", placeholder="Хранилища базы")
+                    button(type="button").button.btn_selectStore выбрать              
+                                                
+                    label(for="") Выбрать категорию(поле)           
+                    select(name="storeCategories", placeholder="Категории хранилища")
 
-        p задание
-        form.form.form_request_data
-            br           
-            label(for="") Выбрать категорию заданий           
-            select(name="catForTask")
-            br
-            button(type='button').button.btn_exercise_data получить случайное задание
-            button(type='button').button.btn_theme_data тематическое задание
-            .request_data_exercise
-            //- здесь будет выводится задание
+                    button(type='button').button.btn_file_data данные из файла     
+                    button(type='button').button.btn_change_data_byhand изменить данные вручную              
+                    
+                    .data_from_file.hidden
+                        p взять из файла
+                        input(type='file').choose_file 
+                    
+                        p() отправить в файл
+                        button(type="button").button.btn_save_data_to_file создать файл 
+                        a(href="").a_send_file отправить файл                           
+                    
+                    .change_data.hidden
+                        textarea(name="newData", placeholder='Вставь новые данные сюда')
 
-            textarea(name='decisionData' placeholder='вставь сюда свое решение')
-            button( type='button').button.btn_submit_decision отправить решение
-            .answer_data.hidden sasadd
-            .result_data
+                        button(type='button').button.btn_add_new_data добавить данные
+                        button(type='submit').button.btn_push_new_data отправить данные 
+                        button(type="button").button.btn_preview_new_data предпросмотр            
 
-            //- здесь будет выводится результат
+                        label(for="") изменить старые данные
+
+                        textarea(name="oldData", placeholder='Вставь старые данные сюда')
+                    .div_btns_change_delete_data
+                        button(type='button').button.btn_change_data Изменить данные
+                        button(type='submit').button.btn_delete_data удалить данные             
+
+        .exercise_container
+            button(type="button").btn_open_create_db создать/удалить БД
+            button(type="button").btn_open_change_db выбрать/изменить БД            
+            p задание
+            form.form.form_request_data
+        
+                label(for="") Выбрать категорию заданий           
+                select(name="catForTask")
+
+                button(type='button').button.btn_exercise_data получить случайное задание
+                button(type='button').button.btn_theme_data тематическое задание
+                .request_data_exercise
+                //- здесь будет выводится задание
+
+                textarea(name='decisionData' placeholder='вставь сюда свое решение')
+                button( type='button').button.btn_submit_decision отправить решение
+                .answer_data.hidden sasadd
+                .result_data
+
+                //- здесь будет выводится результат

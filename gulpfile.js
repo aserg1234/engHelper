@@ -75,7 +75,8 @@ gulp.task('js', function(){
     return gulp.src([
             'source/js/validation.js',
             'source/js/form.js',
-            'source/js/navigation.js',            
+            'source/js/navigation.js',  
+            'source/js/style.js',          
             'source/js/main.js'
         ])
         .pipe(sourcemaps.init())

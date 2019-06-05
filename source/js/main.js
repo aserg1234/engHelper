@@ -35,8 +35,10 @@
    var btnThemeData = document.querySelector('.btn_theme_data');   
    var btnExerciseData = document.querySelector('.btn_exercise_data');   
    //
-    var btnSubmitDecision = document.querySelector('.btn_submit_decision');    
-   
+   var btnSubmitDecision = document.querySelector('.btn_submit_decision');
+
+   var btnFileData = document.querySelector('.btn_file_data');    
+   var btnChangeDataByhand = document.querySelector('.btn_change_data_byhand');   
 
    //var jsonDataDB = JSON.parse(base);
 
@@ -557,12 +559,12 @@
   //
   function sendDecision(){
 
-    var decisionData = document.getElementsByName('decisionData')[0];
+    //var decisionData = document.getElementsByName('decisionData')[0];
     var answerData = document.querySelector('.answer_data');  
     answerData.classList.remove('hidden');
     var resultData = document.querySelector('.result_data');
 
-    resultData.textContent = decisionData.value;
+    //resultData.textContent = decisionData.value;
 
   }
 
@@ -636,9 +638,7 @@
           }else{
 
           }
-          //console.log(fileStr);
       }
-
     }; 
     hideDecision();
   }
@@ -668,6 +668,17 @@
    
   }
   //getRandomStoreNum();
+
+  //открыть меню для работы с файлами
+  function openMenuWorkFile(){
+    var menu = document.querySelector('.data_from_file');
+    menu.classList.toggle('hidden');
+  }
+  //открыть меню для работы с данными вручную
+  function openMenuChangeData(){
+    var menu = document.querySelector('.change_data');
+    menu.classList.toggle('hidden');
+  }
 
 
 
@@ -726,9 +737,11 @@
     //обработка отправить решение
     btnSubmitDecision.addEventListener("click", sendDecision);   
 
+    //обработка вызвать меню для работы с данными из файла
+    btnFileData.addEventListener("click", openMenuWorkFile); 
 
-    
-    
+    //обработка вызвать меню для изменения данных в ручную
+    btnChangeDataByhand.addEventListener("click", openMenuChangeData);     
 
   }
    //////////////////////////////////////////////////////

@@ -1,0 +1,110 @@
+
+
+.container{
+    .overlay_create_db{
+        height: 0;
+        width: 100%;
+        position: fixed;
+        z-index: 2;
+        left: 0;
+        top: 0;
+
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.9);
+        overflow-x: hidden;
+        transition: 0.5s;
+        
+        .createDB_container{
+            //центровка
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            margin: auto;
+            width: 200px;
+            height: 200px;
+            padding: 50px;
+
+
+            border-radius: 3px;
+            text-align: center;
+            background-color: #fff;
+
+
+        }
+
+
+        .btn_close_create_db{
+            position: absolute;
+            top: 20px;
+            right: 45px;
+            font-size: 60px;
+        
+            text-decoration: none;
+            font-size: 36px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        
+        }
+  
+    }
+    .overlay_use_db{
+        height: 0;
+        width: 100%;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.9);
+        overflow-x: hidden;
+        transition: 0.5s;
+
+        .useDB_container{
+            //центровка
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            margin: auto;
+            width: 350px;
+            //height: 300px;
+            padding: 50px;
+
+
+            border-radius: 3px;
+            //text-align: center;
+            background-color: #fff;
+
+
+        }
+
+        .btn_close_use_db{
+            position: absolute;
+            top: 20px;
+            right: 45px;
+            font-size: 60px;
+        
+            text-decoration: none;
+            font-size: 36px;
+            color: #818181;
+            display: block;
+            transition: 0.3s; 
+        }  
+        
+        .div_btns_change_delete_data{
+            padding: 5px;
+        }
+    }
+}
+
+
+
+
+.btn_open_side{
+
+}
