@@ -1,0 +1,48 @@
+.form_request_data{
+    //центровка
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 90%;
+    height: 300px;
+
+    text-align: center;
+
+    ::placeholder{
+        color: #dbd6d6;
+        text-align: center;
+    }
+
+    p{
+        font-size: 2rem;
+    }
+    
+
+    [name=decisionData]{
+
+        margin: 5px;
+        width: 90%;
+        height: 30%;
+        font-size: 2rem;
+        background-color: rgb(230, 230, 230);
+
+        
+    }
+
+    .request_data_exercise{
+        width: 90%;
+        min-height: 40px; 
+        margin-top: 10px; 
+        font-size: 30px;
+
+    }
+
+    .answer_data{
+        width: 90%;
+        min-height: 40px; 
+        margin-top: 10px; 
+        font-size: 30px;       
+    }
+}

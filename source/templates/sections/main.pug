@@ -43,7 +43,7 @@ section.form-section
                     
                         p() отправить в файл
                         button(type="button").button.btn_save_data_to_file создать файл 
-                        a(href="").a_send_file отправить файл                           
+                        a(href="").a_send_file отправить в файл                           
                     
                     .change_data.hidden
                         textarea(name="newData", placeholder='Вставь новые данные сюда')
@@ -62,9 +62,9 @@ section.form-section
         .exercise_container
             button(type="button").btn_open_create_db создать/удалить БД
             button(type="button").btn_open_change_db выбрать/изменить БД            
-            p задание
+            
             form.form.form_request_data
-        
+                p задание
                 label(for="") Выбрать категорию заданий           
                 select(name="catForTask")
 
@@ -73,7 +73,7 @@ section.form-section
                 .request_data_exercise
                 //- здесь будет выводится задание
 
-                textarea(name='decisionData' placeholder='вставь сюда свое решение')
+                textarea(name='decisionData' placeholder='вставьте сюда свое решение')
                 button( type='button').button.btn_submit_decision отправить решение
                 .answer_data.hidden sasadd
                 .result_data
