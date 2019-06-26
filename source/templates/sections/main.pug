@@ -65,11 +65,17 @@ section.form-section
             
             form.form.form_request_data
                 p задание
-                label(for="") Выбрать категорию заданий           
-                select(name="catForTask")
+                .themeCatChoice
+                    label(for="") Выбрать категорию темы           
+                    select(name="catThemeForTask")                
+                    //- label(for="") Выбрать тему           
+                    input(type="text" name="themeForTask" placeholder="тема")              
+                    label(for="") Выбрать категорию заданий           
+                    select(name="catForTask")
 
-                button(type='button').button.btn_exercise_data задание по всем темам
-                button(type='button').button.btn_theme_data тематическое задание
+                button(type='button').button.btn_exercise_data задание из всех хранилищ
+                button(type='button').button.btn_theme_data тематическое задание                
+                button(type='button').button.btn_all_theme_data задание по всем темам
                 .request_data_exercise
                 //- здесь будет выводится задание
 

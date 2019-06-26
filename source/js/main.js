@@ -23,6 +23,8 @@
    var selectDbStores = document.getElementsByName('dbStores');
    var btnSelectStore = document.querySelector('.btn_selectStore');
    var selectStoreCategories = document.getElementsByName('storeCategories');
+   var selectCatThemeForTask = document.getElementsByName('catThemeForTask'); 
+   var themeForTask =  document.getElementsByName('themeForTask'); 
    var taskCategory = document.getElementsByName('catForTask');
    var selectStoreCategoriesAnswer = document.getElementsByName('storeCategoriesAnswer');
    var textAreaNewData = document.getElementsByName('newData');
@@ -34,7 +36,8 @@
    var btnDeleteData = document.querySelector('.btn_delete_data'); 
    var btnDataFromFile = document.querySelector('input[type=file]');
    var btnSaveDataToFile = document.querySelector('.btn_save_data_to_file');
-   var btnThemeData = document.querySelector('.btn_theme_data');   
+   var btnThemeData = document.querySelector('.btn_theme_data');     
+   var btnAlThemeData = document.querySelector('.btn_all_theme_data');   
    var btnExerciseData = document.querySelector('.btn_exercise_data');   
    //
    var btnSubmitDecision = document.querySelector('.btn_submit_decision');
@@ -61,6 +64,7 @@
    var newDataFromFileObl ={};
 
    var answerDataObj = {};
+ 
 
    //создание базы данных и базового хранилища + создание списка хранилищ
    function openDb() {
@@ -200,6 +204,15 @@
     req.onsuccess = function (evt) {
       db = this.result;
 
+          //удаление поля темы
+          themeForTask[0].value = '';
+
+          //удаление старых <option> theme
+          var oldOptionsCountTheme = selectCatThemeForTask[0].childNodes.length;
+          for(var i = 0; i < oldOptionsCountTheme; i++){
+            selectCatThemeForTask[0].removeChild(selectCatThemeForTask[0].childNodes[0]);                                          
+          }
+
           //удаление старых <option>
           var oldOptionsCount = selectStoreCategories[0].childNodes.length;
           for(var i = 0; i < oldOptionsCount; i++){
@@ -220,10 +233,14 @@
            var categories = db.transaction(selectDbStores[0].value)
              .objectStore(selectDbStores[0].value).indexNames;
            for(var j in categories){
-             if( j >= 0){              
+             if( j >= 0){           
+              var option4 = document.createElement('option');//                  
                var option = document.createElement('option');//
                var option2 = document.createElement('option');//
                var option3 = document.createElement('option');//
+
+               option4.setAttribute('value', categories[j]);
+               option4.textContent =  categories[j];               
 
                option.setAttribute('value', categories[j]);
                option.textContent =  categories[j];
@@ -232,8 +249,9 @@
                option2.textContent =  categories[j];
 
                option3.setAttribute('value', categories[j]);
-               option3.textContent =  categories[j];              
-
+               option3.textContent =  categories[j]; 
+                            
+               selectCatThemeForTask[0].appendChild(option4);//
                selectStoreCategories[0].appendChild(option);//
                taskCategory[0].appendChild(option2);     
                selectStoreCategoriesAnswer[0].appendChild(option3);//                
@@ -274,11 +292,11 @@
       .objectStore(selectDbStores[0].value);
 
       var storeRange = 0;
-      var countRquest = objectStore.count();
+      var countRequest = objectStore.count();
 
-        countRquest.onsuccess = function(){
+        countRequest.onsuccess = function(){
 
-        storeRange = countRquest.result;
+        storeRange = countRequest.result;
           console.log(storeRange);
 
       }
@@ -494,6 +512,103 @@
 
   }
 
+  //получить задание по всем темам
+  function getAllThemeData(){
+
+
+    //очищаем поле - старое решение
+    var decisionData = document.getElementsByName('decisionData')[0];
+    decisionData.value = '';
+  
+    var req = indexedDB.open(DB_NAME);//, DB_VERSION
+
+    var taskCategory = document.getElementsByName('catForTask')[0].value;
+    var dataTask = document.querySelector('.request_data_exercise');
+
+    
+
+    req.onsuccess = function (evt) {
+
+      db = this.result;
+
+      //количество записей в базе
+      var objectStore  = db.transaction(selectDbStores[0].value, "readonly")
+      .objectStore(selectDbStores[0].value);
+
+      var storeRange = 0;
+      var randId;
+
+      var countRequest = objectStore.count();
+
+//console.log(objectStore.count());     
+
+      countRequest.onsuccess = function(){
+
+        storeRange = countRequest.result;
+        console.log("количество записей в хранилище: " + storeRange);
+
+        randId = chooseRandTask(storeRange);
+      }
+
+      //курсор поиск задания
+      var cur = db.transaction(selectDbStores[0].value, "readwrite")
+        .objectStore(selectDbStores[0].value).openCursor();
+var themeObj = [];         
+var j = 0;
+      cur.onsuccess = function(e){
+        
+//console.log(j++);        
+        var cursor = e.target.result;
+         
+        if(cursor){
+
+          var data = cursor.value;
+     
+            if(cursor.value[selectCatThemeForTask[0].value] == themeForTask[0].value){
+                themeObj[j++] = data;
+                //console.log(data);
+                console.dir(themeObj[j-1]);//
+            }
+
+            if( cursor.value[selectDbStores[0].value+'_id'] == randId ){
+              
+              dataTask.textContent = data[taskCategory];
+              // console.dir(data[taskCategory] + "; рэнд = " +  randId);
+              // console.dir(cursor.value[selectDbStores[0].value+'_id']);
+              //if(taskCategory == 'words') {
+                //resStr += cursor.value[ e.target.source.indexNames[i] ];
+
+                //заполняю глоб объект данными из выбранной записи
+                for(var i in data ){
+                  answerDataObj[i] = cursor.value[i];
+                  //console.log(i);   
+                  //console.dir(answerDataObj[i]);               
+                }
+
+                //answerData.textContent = cursor.value;//.translate 
+                //answerData.textContent = resStr;
+                //debugger
+                
+              //}else{
+                //answerData.textContent = cursor.value.words;
+              //}
+
+                            
+            }
+
+              cursor.continue();
+
+          }else{
+
+          }
+
+      }
+
+    }; 
+    hideDecision();
+//console.dir(answerDataObj.length);
+  }
+
   //получение тематического задания
   function getThemeData(){
 
@@ -502,8 +617,6 @@
     decisionData.value = '';
   
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
-    
-    var fileStr = '';
 
     var taskCategory = document.getElementsByName('catForTask')[0].value;
     var dataTask = document.querySelector('.request_data_exercise');
@@ -521,11 +634,11 @@
       var storeRange = 0;
       var randId;
 
-      var countRquest = objectStore.count();
+      var countRequest = objectStore.count();
 
-      countRquest.onsuccess = function(){
+      countRequest.onsuccess = function(){
 
-        storeRange = countRquest.result;
+        storeRange = countRequest.result;
         console.log("количество записей в хранилище: " + storeRange);
 
         randId = chooseRandTask(storeRange);
@@ -542,7 +655,6 @@
           if(cursor){
 
             var data = cursor.value;
-            var key = Object.keys(cursor.value);
 
             if(cursor.value[selectDbStores[0].value+'_id'] == randId){
               
@@ -637,11 +749,11 @@
       var storeRange = 0;
       var randId;
 
-      var countRquest = objectStore.count();
+      var countRequest = objectStore.count();
 
-      countRquest.onsuccess = function(){
+      countRequest.onsuccess = function(){
 
-      storeRange = countRquest.result;
+      storeRange = countRequest.result;
 
      
         console.log("количество записей в хранилище: " + storeRange);
@@ -772,8 +884,11 @@
     //обработка сохранить данные для файла
     btnSaveDataToFile.addEventListener("click", saveDataForFile);
 
+    //обработка получить задание по всем темам
+    btnAlThemeData.addEventListener("click", getThemeData);
+    
     //обработка получить тематическое задание
-    btnThemeData.addEventListener("click", getThemeData);
+    btnThemeData.addEventListener("click", getAllThemeData);
 
     //обработка  получить задание из всей базы
     btnExerciseData.addEventListener("click", getRandomStoreNum);

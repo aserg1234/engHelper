@@ -1,9 +1,9 @@
 .form_request_data{
     //центровка
     position: absolute;
-    top: 50%;
+    //top: 30%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%);//transform: translate(-50%, -50%);
 
     width: 90%;
     height: 300px;
@@ -18,7 +18,10 @@
     p{
         font-size: 2rem;
     }
-    
+
+    .themeCatChoice{
+        padding: 5px;
+    }    
 
     [name=decisionData]{
 
