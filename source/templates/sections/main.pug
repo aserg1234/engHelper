@@ -74,8 +74,10 @@ section.form-section
                 //- здесь будет выводится задание
 
                 textarea(name='decisionData' placeholder='вставьте сюда свое решение')
+                label() Выбрать категорию ответа
+                select(name="storeCategoriesAnswer")
                 button( type='button').button.btn_submit_decision отправить решение
-                .answer_data.hidden sasadd
+                .answer_data.hidden 
                 .result_data
 
                 //- здесь будет выводится результат

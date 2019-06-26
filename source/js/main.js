@@ -23,6 +23,8 @@
    var selectDbStores = document.getElementsByName('dbStores');
    var btnSelectStore = document.querySelector('.btn_selectStore');
    var selectStoreCategories = document.getElementsByName('storeCategories');
+   var taskCategory = document.getElementsByName('catForTask');
+   var selectStoreCategoriesAnswer = document.getElementsByName('storeCategoriesAnswer');
    var textAreaNewData = document.getElementsByName('newData');
    var btnAddNewData = document.querySelector('.btn_add_new_data');    
    var btnPreviewNewData = document.querySelector('.btn_preview_new_data');     
@@ -57,6 +59,8 @@
    var newCategoryObj = {};
    var newDataObj = {};
    var newDataFromFileObl ={};
+
+   var answerDataObj = {};
 
    //создание базы данных и базового хранилища + создание списка хранилищ
    function openDb() {
@@ -192,8 +196,6 @@
   //получение категорий(полей) хранилища для <select>
   function getStoreCat(){
 
-    var taskCategory = document.getElementsByName('catForTask');
-
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
     req.onsuccess = function (evt) {
       db = this.result;
@@ -201,9 +203,19 @@
           //удаление старых <option>
           var oldOptionsCount = selectStoreCategories[0].childNodes.length;
           for(var i = 0; i < oldOptionsCount; i++){
-              selectStoreCategories[0].removeChild(selectStoreCategories[0].childNodes[0]);
+              selectStoreCategories[0].removeChild(selectStoreCategories[0].childNodes[0]);                                          
+          }
+          //удаление старых <option> exercise   
+          var oldOptionsCountTask = taskCategory[0].childNodes.length;
+          for(var i = 0; i < oldOptionsCountTask; i++){              
+              taskCategory[0].removeChild(taskCategory[0].childNodes[0]);                            
           }
           
+          //удаление старых <option> Answer
+          var oldOptionsCountAnswer = selectStoreCategoriesAnswer[0].childNodes.length;
+          for(var i = 0; i < oldOptionsCountAnswer; i++){            
+            selectStoreCategoriesAnswer[0].removeChild(selectStoreCategoriesAnswer[0].childNodes[0]);
+          }          
            //получение категорий(полей) хранилища для <select>
            var categories = db.transaction(selectDbStores[0].value)
              .objectStore(selectDbStores[0].value).indexNames;
@@ -211,6 +223,7 @@
              if( j >= 0){              
                var option = document.createElement('option');//
                var option2 = document.createElement('option');//
+               var option3 = document.createElement('option');//
 
                option.setAttribute('value', categories[j]);
                option.textContent =  categories[j];
@@ -218,8 +231,12 @@
                option2.setAttribute('value', categories[j]);
                option2.textContent =  categories[j];
 
-               selectStoreCategories[0].appendChild(option);//   
+               option3.setAttribute('value', categories[j]);
+               option3.textContent =  categories[j];              
+
+               selectStoreCategories[0].appendChild(option);//
                taskCategory[0].appendChild(option2);     
+               selectStoreCategoriesAnswer[0].appendChild(option3);//                
              }
            }
   
@@ -508,34 +525,46 @@
 
       countRquest.onsuccess = function(){
 
-      storeRange = countRquest.result;
+        storeRange = countRquest.result;
         console.log("количество записей в хранилище: " + storeRange);
 
         randId = chooseRandTask(storeRange);
       }
-      
+
       //курсор поиск задания
       var cur = db.transaction(selectDbStores[0].value, "readwrite")
         .objectStore(selectDbStores[0].value).openCursor();
-      
+
       cur.onsuccess = function(e){
 
           var cursor = e.target.result;
           
           if(cursor){
 
-            var data = cursor.value;    
+            var data = cursor.value;
+            var key = Object.keys(cursor.value);
 
             if(cursor.value[selectDbStores[0].value+'_id'] == randId){
+              
               dataTask.textContent = data[taskCategory];
               // console.dir(data[taskCategory] + "; рэнд = " +  randId);
               // console.dir(cursor.value[selectDbStores[0].value+'_id']);
-              if(taskCategory == 'words')
+              //if(taskCategory == 'words') {
+                //resStr += cursor.value[ e.target.source.indexNames[i] ];
+                for(var i in data ){
+                  answerDataObj[i] = cursor.value[i];
+                  //console.log(i);                  
+                }
 
-                answerData.textContent = cursor.value.translate; 
+                //answerData.textContent = cursor.value;//.translate 
+                //answerData.textContent = resStr;
+                //debugger
+                
+              //}else{
+                //answerData.textContent = cursor.value.words;
+              //}
 
-              else answerData.textContent = cursor.value.words;
-
+                            
             }
 
               cursor.continue();
@@ -543,9 +572,10 @@
           }else{
 
           }
+          
           //console.log(fileStr);
       }
-
+      //answerData.textContent = resStr;
     }; 
     hideDecision();
   }
@@ -568,7 +598,10 @@
 
     var answerData = document.querySelector('.answer_data');  
     answerData.classList.remove('hidden');
-    var resultData = document.querySelector('.result_data');
+
+    answerData.textContent = answerDataObj[selectStoreCategoriesAnswer[0].value];
+
+    //var resultData = document.querySelector('.result_data');
 
     //resultData.textContent = decisionData.value;
 
