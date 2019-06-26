@@ -515,7 +515,6 @@
   //получить задание по всем темам
   function getAllThemeData(){
 
-
     //очищаем поле - старое решение
     var decisionData = document.getElementsByName('decisionData')[0];
     decisionData.value = '';
@@ -524,8 +523,6 @@
 
     var taskCategory = document.getElementsByName('catForTask')[0].value;
     var dataTask = document.querySelector('.request_data_exercise');
-
-    
 
     req.onsuccess = function (evt) {
 
@@ -536,11 +533,8 @@
       .objectStore(selectDbStores[0].value);
 
       var storeRange = 0;
-      var randId;
 
       var countRequest = objectStore.count();
-
-//console.log(objectStore.count());     
 
       countRequest.onsuccess = function(){
 
@@ -548,16 +542,16 @@
         console.log("количество записей в хранилище: " + storeRange);
 
         randId = chooseRandTask(storeRange);
+
       }
 
       //курсор поиск задания
       var cur = db.transaction(selectDbStores[0].value, "readwrite")
         .objectStore(selectDbStores[0].value).openCursor();
-var themeObj = [];         
+var themeArr = [];         
 var j = 0;
       cur.onsuccess = function(e){
-        
-//console.log(j++);        
+      
         var cursor = e.target.result;
          
         if(cursor){
@@ -565,48 +559,33 @@ var j = 0;
           var data = cursor.value;
      
             if(cursor.value[selectCatThemeForTask[0].value] == themeForTask[0].value){
-                themeObj[j++] = data;
-                //console.log(data);
-                console.dir(themeObj[j-1]);//
-            }
-
-            if( cursor.value[selectDbStores[0].value+'_id'] == randId ){
-              
-              dataTask.textContent = data[taskCategory];
-              // console.dir(data[taskCategory] + "; рэнд = " +  randId);
-              // console.dir(cursor.value[selectDbStores[0].value+'_id']);
-              //if(taskCategory == 'words') {
-                //resStr += cursor.value[ e.target.source.indexNames[i] ];
-
-                //заполняю глоб объект данными из выбранной записи
-                for(var i in data ){
-                  answerDataObj[i] = cursor.value[i];
-                  //console.log(i);   
-                  //console.dir(answerDataObj[i]);               
-                }
-
-                //answerData.textContent = cursor.value;//.translate 
-                //answerData.textContent = resStr;
-                //debugger
-                
-              //}else{
-                //answerData.textContent = cursor.value.words;
-              //}
-
-                            
+                themeArr[j++] = data;
             }
 
               cursor.continue();
 
           }else{
 
+             var randNum = chooseRandTask(themeArr.length);
+
+            for(var i = 0; i < themeArr.length; i++ ){
+
+              if( i == randNum){
+
+                dataTask.textContent = themeArr[i][taskCategory];
+                answerDataObj = themeArr[i];
+
+              }
+
+            }
+
           }
-
+          
       }
-
+//
     }; 
     hideDecision();
-//console.dir(answerDataObj.length);
+
   }
 
   //получение тематического задания
@@ -620,8 +599,6 @@ var j = 0;
 
     var taskCategory = document.getElementsByName('catForTask')[0].value;
     var dataTask = document.querySelector('.request_data_exercise');
-    var answerData = document.querySelector('.answer_data');
-
 
     req.onsuccess = function (evt) {
 
@@ -659,23 +636,10 @@ var j = 0;
             if(cursor.value[selectDbStores[0].value+'_id'] == randId){
               
               dataTask.textContent = data[taskCategory];
-              // console.dir(data[taskCategory] + "; рэнд = " +  randId);
-              // console.dir(cursor.value[selectDbStores[0].value+'_id']);
-              //if(taskCategory == 'words') {
-                //resStr += cursor.value[ e.target.source.indexNames[i] ];
+
                 for(var i in data ){
                   answerDataObj[i] = cursor.value[i];
-                  //console.log(i);                  
                 }
-
-                //answerData.textContent = cursor.value;//.translate 
-                //answerData.textContent = resStr;
-                //debugger
-                
-              //}else{
-                //answerData.textContent = cursor.value.words;
-              //}
-
                             
             }
 
@@ -683,11 +647,11 @@ var j = 0;
 
           }else{
 
+            //console.log(answerDataObj);
           }
-          
-          //console.log(fileStr);
+
       }
-      //answerData.textContent = resStr;
+
     }; 
     hideDecision();
   }
@@ -705,17 +669,10 @@ var j = 0;
   //
   function sendDecision(){
 
-    // var decisionData = document.getElementsByName('decisionData')[0];
-    // decisionData.value = '';
-
     var answerData = document.querySelector('.answer_data');  
     answerData.classList.remove('hidden');
 
     answerData.textContent = answerDataObj[selectStoreCategoriesAnswer[0].value];
-
-    //var resultData = document.querySelector('.result_data');
-
-    //resultData.textContent = decisionData.value;
 
   }
 
