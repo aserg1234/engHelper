@@ -894,18 +894,41 @@ var j = 0;
           var str2 = inputSearchStore[0].value.toLowerCase();
 
           if( str1.indexOf(str2) != -1 && inputSearchStore[0].value != ''){
-            var par = document.createElement('p');
-            par.textContent = data[selectSearchCategory[0].value];
-            foundInfoContainer.appendChild(par);
-            //console.log(data[selectSearchCategory[0].value]);            
+
+            //themeArr.push(data);
+
+            var div1 = document.createElement('div'); 
+            div1.setAttribute('class', 'search_items');
+
+            var div3 = document.createElement('div');
+            div3.setAttribute('class', 'search_item');
+            div3.textContent = data[selectSearchCategory[0].value];
+            div1.appendChild(div3);
+
+            for(var j in data){
+
+              var div2 = document.createElement('div'); 
+              div2.setAttribute('class', 'search_item_point')
+              div2.textContent = j + ": " + data[j];
+              div3.appendChild(div2);
+            }
+            foundInfoContainer.appendChild(div1);
+            //console.log(data);            
           }
             cursor.continue();
 
         }else{
 
-          // for(var i = 0; i < themeArr.length; i++){
+          //for(var i = 0; i < themeArr.length; i++){
 
-          // }
+            
+
+
+
+            //div1.appendChild(div3);
+          
+
+          //}
           //foundInfo.textContent = inputSearchStore[0].value;
         }
           
