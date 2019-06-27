@@ -5,7 +5,7 @@
         height: 0;
         width: 100%;
         position: fixed;
-        z-index: 2;
+        z-index: 3;
         left: 0;
         top: 0;
 
@@ -54,7 +54,7 @@
         height: 0;
         width: 100%;
         position: fixed;
-        z-index: 1;
+        z-index: 2;
         left: 0;
         top: 0;
 
@@ -100,6 +100,67 @@
             padding: 5px;
         }
     }
+
+    .overlay_search_in_store{
+        height: 0;
+        width: 100%;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.9);
+        overflow-x: hidden;
+        transition: 0.5s;
+        
+        .search_in_store_container{
+            //центровка
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            margin: auto;
+            width: 200px;
+            height: 100px;
+            padding: 50px;
+
+
+            border-radius: 3px;
+            text-align: center;
+            background-color: #fff;
+
+            .form_search_in_store{
+                //центровка
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);   
+                
+                ::placeholder{
+                    text-align: center;
+                }
+                :not(p){
+                    margin-top: 5px;
+                }
+                .btn_close_search_in_store{
+                    position: absolute;
+                    top: -28px;
+                    right: -52px;
+                    font-size: 60px;
+                
+                    text-decoration: none;
+                    font-size: 36px;
+                    color: #818181;
+                    display: block;
+                    transition: 0.3s;
+                
+                }                   
+            }
+
+        }     
+    }        
 }
 
 // .btn_open_side{

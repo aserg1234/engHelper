@@ -57,11 +57,23 @@ section.form-section
                         textarea(name="oldData", placeholder='Вставь старые данные сюда')
                     .div_btns_change_delete_data
                         button(type='button').button.btn_change_data Изменить данные
-                        button(type='submit').button.btn_delete_data удалить данные             
-
+                        button(type='submit').button.btn_delete_data удалить данные  
+        .overlay_search_in_store                                   
+            .search_in_store_container
+                form.form.form_search_in_store
+                    a(href="javascript:void(0)").btn_close_search_in_store &times;                
+                    p() Искать в хранилище
+                    label() хранилище
+                    select(name="searchStore") 
+                    br
+                    label() категория 
+                    select(name="searchCategory")                                        
+                    input(type="text" name="inpSearchStore" placeholder="что ищем?")
+                    button(type="button").button.btn_search_in_store искать
         .exercise_container
             button(type="button").btn_open_create_db создать/удалить БД
-            button(type="button").btn_open_change_db выбрать/изменить БД            
+            button(type="button").btn_open_change_db выбрать/изменить БД 
+            button(type="button").btn_open_search_in_db поиск в БД                        
             
             form.form.form_request_data
                 p задание
