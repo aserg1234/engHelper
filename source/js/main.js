@@ -22,6 +22,8 @@
    var btnPreview = document.querySelector('.btn_preview');     
    var selectDbStores = document.getElementsByName('dbStores');
    var btnSelectStore = document.querySelector('.btn_selectStore');
+   var lowRangeBoundForTask = document.getElementsByName('lowRangeBoundForTask');
+   var highRangeBoundForTask = document.getElementsByName('highRangeBoundForTask');   
    var selectStoreCategories = document.getElementsByName('storeCategories');
    var selectCatThemeForTask = document.getElementsByName('catThemeForTask'); 
    var themeForTask =  document.getElementsByName('themeForTask'); 
@@ -558,10 +560,18 @@ var j = 0;
 
           var data = cursor.value;
      
-            if(cursor.value[selectCatThemeForTask[0].value] == themeForTask[0].value){
+            if( cursor.value[selectCatThemeForTask[0].value] == themeForTask[0].value
+              && !inputRangeForTask[0].value ){
                 themeArr[j++] = data;
             }
 
+            if( highRangeBoundForTask[0].value 
+              && cursor.value[selectDbStores[0].value+'_id'] >= 
+              lowRangeBoundForTask[0].value && cursor.value[selectDbStores[0].value+'_id'] <= 
+              highRangeBoundForTask[0].value ){
+              
+                themeArr[j++] = data;
+            }
               cursor.continue();
 
           }else{

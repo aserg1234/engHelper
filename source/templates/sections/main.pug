@@ -66,6 +66,10 @@ section.form-section
             form.form.form_request_data
                 p задание
                 .themeCatChoice
+                    label() Задать диапазон индексов
+                    div()
+                        input(type="text" name="lowRangeBoundForTask" placeholder="нижняя граница")
+                        input(type="text" name="highRangeBoundForTask" placeholder="верхняя граница")
                     div()
                         label(for="") Выбрать категорию темы           
                         select(name="catThemeForTask")                

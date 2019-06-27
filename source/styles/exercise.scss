@@ -13,10 +13,16 @@
     ::placeholder{
         color: #dbd6d6;
         text-align: center;
+        font-size: 0.7rem;
     }
 
     p{
         font-size: 2rem;
+    }
+
+    [name=rangeForTask]{
+        margin: 5px;
+        
     }
 
     .themeCatChoice{
