@@ -1,10 +1,9 @@
 section.form-section
     .container
         .overlay_create_db
-            a(href="javascript:void(0)").btn_close_create_db &times;
-            
             .createDB_container
                 form.form.form_create_db
+                    a(href="javascript:void(0)").btn_close_create_db &times;
                     label(for="") Создать хранилище
                     input(type="text" name="inpStore" placeholder="имя нового хранилища")
                     
@@ -21,10 +20,10 @@ section.form-section
                     button(type="button").button.btn_deleteStore удалить хранилище
           
         .overlay_use_db  
-            a(href="javascript:void(0)").btn_close_use_db &times;
-
+            
             .useDB_container       
-                form.form.form_use_db  
+                form.form.form_use_db
+                    a(href="javascript:void(0)").btn_close_use_db &times;  
                     p использование БД
                     
                     label(for="") Выбрать хранилище
@@ -65,6 +64,7 @@ section.form-section
                     p() Искать в хранилище
                     label() хранилище
                     select(name="searchStore") 
+                    //- button(type="button").button.btn_search_choice выбрать
                     br
                     label() категория 
                     select(name="searchCategory")                                        

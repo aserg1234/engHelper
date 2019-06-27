@@ -8,7 +8,7 @@
 	// (Mozilla никогда не создавала префиксов для объектов, поэтому window.mozIDB* не требуется проверять)
 	if(!window.indexedDB){
 		window.alert("Ваш браузер не поддерживает стабильную версию IndexedDB");
-   }
+  }
 
    ///////////////////////////////////////////////
    //глобальные переменные
@@ -45,8 +45,11 @@
    var btnSubmitDecision = document.querySelector('.btn_submit_decision');
 
    var btnFileData = document.querySelector('.btn_file_data');    
-   var btnChangeDataByhand = document.querySelector('.btn_change_data_byhand');   
-
+   var btnChangeDataByhand = document.querySelector('.btn_change_data_byhand'); 
+   
+   var selectSearchStore = document.getElementsByName('searchStore');   
+   var selectSearchCategory = document.getElementsByName('searchCategory'); 
+   //var btnSearchChoice = document.querySelector('.btn_search_choice');         
    //var jsonDataDB = JSON.parse(base);
 
    var sendDataJsonDb = {};
@@ -84,6 +87,11 @@
             option.textContent =  db.objectStoreNames[i];
             selectDbStores[0].appendChild(option); 
 
+            var option2 = document.createElement('option');//
+            option2.setAttribute('value', db.objectStoreNames[i]);
+            option2.textContent =  db.objectStoreNames[i];
+            selectSearchStore[0].appendChild(option2);             
+
             //получение категорий(полей) хранилища для <select>
             var categories = db.transaction(selectDbStores[0].value)
               .objectStore(selectDbStores[0].value).indexNames;
@@ -92,7 +100,12 @@
                 var option = document.createElement('option');//
                 option.setAttribute('value', categories[j]);
                 option.textContent =  categories[j];
-                selectStoreCategories[0].appendChild(option);//               
+                selectStoreCategories[0].appendChild(option);//  
+                
+                var option2 = document.createElement('option');//
+                option2.setAttribute('value', categories[j]);
+                option2.textContent =  categories[j];
+                selectSearchCategory[0].appendChild(option2);//                 
               }
             }
           
@@ -207,7 +220,7 @@
       db = this.result;
 
           //удаление поля темы
-          themeForTask[0].value = '';
+          //themeForTask[0].value = '';
 
           //удаление старых <option> theme
           var oldOptionsCountTheme = selectCatThemeForTask[0].childNodes.length;
@@ -230,7 +243,8 @@
           var oldOptionsCountAnswer = selectStoreCategoriesAnswer[0].childNodes.length;
           for(var i = 0; i < oldOptionsCountAnswer; i++){            
             selectStoreCategoriesAnswer[0].removeChild(selectStoreCategoriesAnswer[0].childNodes[0]);
-          }          
+          }              
+          
            //получение категорий(полей) хранилища для <select>
            var categories = db.transaction(selectDbStores[0].value)
              .objectStore(selectDbStores[0].value).indexNames;
@@ -267,6 +281,41 @@
     };
   }
 
+  //получение категорий для поиска
+  function getStoreCatForSearch(){
+    var req = indexedDB.open(DB_NAME);//, DB_VERSION
+    req.onsuccess = function (evt) {
+      db = this.result;
+      
+      
+          //удаление старых <option>
+          var oldOptionsCount = selectSearchCategory[0].childNodes.length;
+          for(var i = 0; i < oldOptionsCount; i++){
+            selectSearchCategory[0].removeChild(selectSearchCategory[0].childNodes[0]);                                          
+          }
+          
+           //получение категорий(полей) хранилища для <select>
+           var categories = db.transaction(selectSearchStore[0].value)
+             .objectStore(selectSearchStore[0].value).indexNames;
+           for(var j in categories){
+             if( j >= 0){
+
+               var option = document.createElement('option');//
+
+               option.setAttribute('value', categories[j]);
+               option.textContent =  categories[j];
+
+               selectSearchCategory[0].appendChild(option);//
+             
+             }
+           }
+  
+      //////////
+
+      DB_VERSION = this.result.version;
+      console.log("openDb DONE");
+    };
+  }
   //
   function addNewData(){
     newDataObj[selectStoreCategories[0].value] = textAreaNewData[0].value.trim();//
@@ -860,7 +909,16 @@ var j = 0;
     btnFileData.addEventListener("click", openMenuWorkFile); 
 
     //обработка вызвать меню для изменения данных в ручную
-    btnChangeDataByhand.addEventListener("click", openMenuChangeData);     
+    btnChangeDataByhand.addEventListener("click", openMenuChangeData);  
+    
+    //обработка получить категории для поиска
+    //getStoreCatForSearch(select)
+    selectSearchStore[0].addEventListener("change",function(){
+      getStoreCatForSearch();
+
+      //console.log('ok');
+    });
+    //btnSearchChoice.addEventListener("click", getStoreCatForSearch) ;    
 
   }
    //////////////////////////////////////////////////////
