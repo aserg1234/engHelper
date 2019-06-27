@@ -49,7 +49,11 @@
    
    var selectSearchStore = document.getElementsByName('searchStore');   
    var selectSearchCategory = document.getElementsByName('searchCategory'); 
-   //var btnSearchChoice = document.querySelector('.btn_search_choice');         
+   var inputSearchStore = document.getElementsByName('inpSearchStore'); 
+   var btnSearchInStore = document.querySelector('.btn_search_in_store'); 
+   var foundInfo =  document.querySelector('.found_info');
+
+   var foundInfoContainer = document.querySelector('.found_info_container');
    //var jsonDataDB = JSON.parse(base);
 
    var sendDataJsonDb = {};
@@ -564,7 +568,7 @@
   }
 
   //получить задание по всем темам
-  function getAllThemeData(){
+  function getThemeData(){
 
     //очищаем поле - старое решение
     var decisionData = document.getElementsByName('decisionData')[0];
@@ -641,7 +645,7 @@ var j = 0;
   }
 
   //получение тематического задания
-  function getThemeData(){
+  function getAllThemeData(){
 
     //очищаем поле - старое решение
     var decisionData = document.getElementsByName('decisionData')[0];
@@ -845,6 +849,72 @@ var j = 0;
     menu.classList.toggle('hidden');
   }
 
+  //поисе в хранилище
+  function searchInStore(){
+    //inputSearchStore
+    // selectSearchStore
+    // selectSearchCategory
+    //found_info
+    
+    
+    //очищаем поле - старое решение
+    var decisionData = document.getElementsByName('decisionData')[0];
+    decisionData.value = '';
+  
+    var req = indexedDB.open(DB_NAME);//, DB_VERSION
+
+    req.onsuccess = function (evt) {
+
+      db = this.result;
+
+      //количество записей в базе
+      var objectStore  = db.transaction(selectSearchStore[0].value, "readonly")
+      .objectStore(selectSearchStore[0].value);
+
+      var storeRange = 0;
+
+      var countRequest = objectStore.count();
+
+      countRequest.onsuccess = function(){
+
+        storeRange = countRequest.result;
+        console.log("количество записей в хранилище: " + storeRange);
+
+      }
+
+      //курсор поиск задания
+      var cur = db.transaction(selectSearchStore[0].value, "readwrite")
+        .objectStore(selectSearchStore[0].value).openCursor();
+      var themeArr = [];         
+      var j = 0;
+      cur.onsuccess = function(e){
+      
+        var cursor = e.target.result;
+         
+        if(cursor){
+
+          var data = cursor.value;
+
+          var str1 = data[selectSearchCategory[0].value].toLowerCase();
+          var str2 = inputSearchStore[0].value.toLowerCase();
+
+          if( str1.indexOf(str2) != -1 && inputSearchStore[0].value != ''){
+            var par = document.createElement('p');
+            par.textContent = data[selectSearchCategory[0].value];
+            foundInfoContainer.appendChild(par);
+            //console.log(data[selectSearchCategory[0].value]);            
+          }
+            cursor.continue();
+
+        }else{
+
+          //foundInfo.textContent = inputSearchStore[0].value;
+        }
+          
+      }
+    }; 
+  }
+
 
 
   /////////////////////////////////////////////////////////////// 
@@ -894,10 +964,10 @@ var j = 0;
     btnSaveDataToFile.addEventListener("click", saveDataForFile);
 
     //обработка получить задание по всем темам
-    btnAlThemeData.addEventListener("click", getThemeData);
+    btnAlThemeData.addEventListener("click", getAllThemeData);
     
     //обработка получить тематическое задание
-    btnThemeData.addEventListener("click", getAllThemeData);
+    btnThemeData.addEventListener("click", getThemeData);
 
     //обработка  получить задание из всей базы
     btnExerciseData.addEventListener("click", getRandomStoreNum);
@@ -918,7 +988,10 @@ var j = 0;
 
       //console.log('ok');
     });
-    //btnSearchChoice.addEventListener("click", getStoreCatForSearch) ;    
+    //btnSearchChoice.addEventListener("click", getStoreCatForSearch) ; 
+    
+    //обработка поиск в хранилище
+    btnSearchInStore.addEventListener("click", searchInStore);      
 
   }
    //////////////////////////////////////////////////////

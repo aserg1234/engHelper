@@ -129,14 +129,16 @@
 
             border-radius: 3px;
             text-align: center;
-            background-color: #fff;
+            // background-color: #fff;
 
             .form_search_in_store{
                 //центровка
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%);   
+                transform: translate(-50%, -50%);  
+                
+                background-color: #fff;
                 
                 ::placeholder{
                     text-align: center;
@@ -159,8 +161,10 @@
                 }                   
             }
 
-        }     
-    }        
+        }
+       
+    }     
+ 
 }
 
 // .btn_open_side{

@@ -68,10 +68,11 @@ section.form-section
                     select(name="searchCategory")                                        
                     input(type="text" name="inpSearchStore" placeholder="что ищем?")
                     button(type="button").button.btn_search_in_store искать
+                
         .exercise_container
-            button(type="button").btn_open_create_db создать/удалить БД
-            button(type="button").btn_open_change_db выбрать/изменить БД 
-            button(type="button").btn_open_search_in_db поиск в БД                        
+            button(type="button").button.btn_open_create_db создать/удалить БД
+            button(type="button").button.btn_open_change_db выбрать/изменить БД 
+            button(type="button").button.btn_open_search_in_db поиск в БД                        
             
             form.form.form_request_data
                 p задание
@@ -99,5 +100,7 @@ section.form-section
                 button( type='button').button.btn_submit_decision отправить решение
                 .answer_data.hidden 
                 .result_data
+        .found_info_container        
+            .found_info
 
                 //- здесь будет выводится результат
