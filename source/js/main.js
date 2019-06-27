@@ -851,15 +851,10 @@ var j = 0;
 
   //поисе в хранилище
   function searchInStore(){
-    //inputSearchStore
-    // selectSearchStore
-    // selectSearchCategory
-    //found_info
-    
-    
+   
     //очищаем поле - старое решение
-    var decisionData = document.getElementsByName('decisionData')[0];
-    decisionData.value = '';
+    
+    foundInfoContainer.textContent = '';
   
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
 
@@ -908,6 +903,9 @@ var j = 0;
 
         }else{
 
+          // for(var i = 0; i < themeArr.length; i++){
+
+          // }
           //foundInfo.textContent = inputSearchStore[0].value;
         }
           
