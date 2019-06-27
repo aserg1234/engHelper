@@ -543,7 +543,7 @@
         storeRange = countRequest.result;
         console.log("количество записей в хранилище: " + storeRange);
 
-        randId = chooseRandTask(storeRange);
+        //randId = chooseRandTask(storeRange);
 
       }
 
@@ -561,7 +561,7 @@ var j = 0;
           var data = cursor.value;
      
             if( cursor.value[selectCatThemeForTask[0].value] == themeForTask[0].value
-              && !inputRangeForTask[0].value ){
+              && !highRangeBoundForTask[0].value ){
                 themeArr[j++] = data;
             }
 
@@ -571,23 +571,16 @@ var j = 0;
               highRangeBoundForTask[0].value ){
               
                 themeArr[j++] = data;
+                
             }
               cursor.continue();
 
           }else{
 
-             var randNum = chooseRandTask(themeArr.length);
+              var randNum = chooseRandTask(themeArr.length);
 
-            for(var i = 0; i < themeArr.length; i++ ){
-
-              if( i == randNum){
-
-                dataTask.textContent = themeArr[i][taskCategory];
-                answerDataObj = themeArr[i];
-
-              }
-
-            }
+              dataTask.textContent = themeArr[randNum-1][taskCategory];
+              answerDataObj = themeArr[randNum-1];
 
           }
           
