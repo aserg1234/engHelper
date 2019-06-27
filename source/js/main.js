@@ -899,10 +899,10 @@ var j = 0;
 
             var div1 = document.createElement('div'); 
             div1.setAttribute('class', 'search_items');
+            div1.textContent = data[selectSearchCategory[0].value];
 
             var div3 = document.createElement('div');
             div3.setAttribute('class', 'search_item');
-            div3.textContent = data[selectSearchCategory[0].value];
             div1.appendChild(div3);
 
             for(var j in data){
@@ -919,24 +919,38 @@ var j = 0;
 
         }else{
 
-          //for(var i = 0; i < themeArr.length; i++){
-
-            
-
-
-
-            //div1.appendChild(div3);
-          
-
-          //}
-          //foundInfo.textContent = inputSearchStore[0].value;
+          searchInfoDisplay();
         }
           
       }
     }; 
   }
 
+  //search info displaying
+  function searchInfoDisplay(){
+    var accord = document.getElementsByClassName('search_items');
 
+    for (var i = 0; i < accord.length; i++) {
+      accord[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+
+        var panel = this.childNodes[1];
+
+          if (panel.style.display === "block") {
+            panel.style.display = "none";
+            this.style.padding = "10px 0 10px 0";
+          } else {
+            panel.style.display = "block";
+            this.style.padding = "10px 0 0 0";            
+          }
+        
+
+      }); 
+    }   
+
+
+
+  }
 
   /////////////////////////////////////////////////////////////// 
   //обработчики событий
