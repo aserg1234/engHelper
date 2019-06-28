@@ -1,4 +1,18 @@
 
+
+.search_result_header{
+    background-color: rgb(185, 183, 183);
+    font-size: 15px !important;
+    padding: 10px 0 10px 0;
+    margin-bottom: 0;
+
+    &:hover{
+        background-color: rgb(139, 137, 137);
+        cursor: pointer;
+        transition: 1s;
+    }
+}
+
 .found_info_container{
     //position: absolute;
     //top: 460px;    

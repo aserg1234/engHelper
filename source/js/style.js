@@ -6,6 +6,8 @@
     var btnOpenCreateDbMenu = document.querySelector('.btn_open_create_db');
     var btnOpenChangeDbMenu = document.querySelector('.btn_open_change_db');
     var btnOpenSearchInSoreMenu = document.querySelector('.btn_open_search_in_db');
+    var pSearchResultHeader = document.querySelector('.search_result_header');
+    
     // function openNav(){
     //     var openedElement;
     //     if(this.className.contains('btn_open_create_db')){
@@ -37,6 +39,23 @@
         document.querySelector('.overlay_use_db').style.height = "0";
         document.querySelector('.overlay_search_in_store').style.height = "0";        
     }
+    //открыть/скрыть результаты поиска
+    function closeOpenSearchRes(){
+        var searchResult = document.querySelector('.found_info_container');
+        //console.log(searchResult.classList);
+
+        searchResult.classList.toggle('hidden');
+
+
+        // if(searchResult.classList.contains == 'hidden'){
+        //     searchResult.classList.remove('hidden');
+        // }else{
+        //     searchResult.classList.add('hidden');            
+        // }
+
+    }
+
+
 
     function addEventListeners(){
 
@@ -57,6 +76,9 @@
 
         //открыть меню поиск в хранилище
         btnOpenSearchInSoreMenu.addEventListener('click', openSearchInStore);
+
+        //проказать/скрыть результаты поиска
+        pSearchResultHeader.addEventListener('click',closeOpenSearchRes);
         
     }
 

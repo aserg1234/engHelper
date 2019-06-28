@@ -605,8 +605,8 @@
       //курсор поиск задания
       var cur = db.transaction(selectDbStores[0].value, "readwrite")
         .objectStore(selectDbStores[0].value).openCursor();
-var themeArr = [];         
-var j = 0;
+      var themeArr = [];         
+      var j = 0;
       cur.onsuccess = function(e){
       
         var cursor = e.target.result;
@@ -741,18 +741,36 @@ var j = 0;
 
     answerData.textContent = answerDataObj[selectStoreCategoriesAnswer[0].value];//
 
-    var div = document.createElement('div');
-    div.setAttribute('class', 'div_description_desition');
+    var div = document.querySelector('.div_description_desition');
+    //div.textContent = 'AAAAAAAAAAAAAAAAA';
+    var divPoints = document.querySelector('.div_description_desition_points');
+    //div.textContent = '';
+    divPoints.textContent = '';
 
     for(var j in answerDataObj){
 
       var div1 = document.createElement('div');
       div1.setAttribute('class', 'description_desition_point');
       div1.textContent = j + ": " + answerDataObj[j];
-      div.appendChild(div1);
-      
+      divPoints.appendChild(div1);
+
     }
-    divDescriptionDecision.appendChild(div);
+    //divDescriptionDecision.appendChild(div);
+
+      div.addEventListener("click", function() {
+        this.classList.toggle("active");
+
+        var panel = this.nextElementSibling;
+//console.dir(this);
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+          //this.style.padding = "10px 0 10px 0";
+        } else {
+          panel.style.display = "block";
+          //this.style.padding = "10px 0 0 0";            
+        }
+        
+      });  
     
   }
 
@@ -971,8 +989,6 @@ var j = 0;
 
       }); 
     }   
-
-
 
   }
 
