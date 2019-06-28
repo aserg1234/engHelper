@@ -40,9 +40,11 @@
    var btnSaveDataToFile = document.querySelector('.btn_save_data_to_file');
    var btnThemeData = document.querySelector('.btn_theme_data');     
    var btnAlThemeData = document.querySelector('.btn_all_theme_data');   
-   var btnExerciseData = document.querySelector('.btn_exercise_data');   
+   var btnExerciseData = document.querySelector('.btn_exercise_data');
+
    //
    var btnSubmitDecision = document.querySelector('.btn_submit_decision');
+   var divDescriptionDecision = document.querySelector('.result_data');   
 
    var btnFileData = document.querySelector('.btn_file_data');    
    var btnChangeDataByhand = document.querySelector('.btn_change_data_byhand'); 
@@ -630,10 +632,19 @@ var j = 0;
 
           }else{
 
-              var randNum = chooseRandTask(themeArr.length);
+            var randNum = chooseRandTask(themeArr.length);
 
+            if(!themeArr.length){
+
+              alert('Укажите границы диапазона индекстов или имя темы!');
+            }else{
               dataTask.textContent = themeArr[randNum-1][taskCategory];
               answerDataObj = themeArr[randNum-1];
+
+            }
+            
+
+
 
           }
           
@@ -728,8 +739,21 @@ var j = 0;
     var answerData = document.querySelector('.answer_data');  
     answerData.classList.remove('hidden');
 
-    answerData.textContent = answerDataObj[selectStoreCategoriesAnswer[0].value];
+    answerData.textContent = answerDataObj[selectStoreCategoriesAnswer[0].value];//
 
+    var div = document.createElement('div');
+    div.setAttribute('class', 'div_description_desition');
+
+    for(var j in answerDataObj){
+
+      var div1 = document.createElement('div');
+      div1.setAttribute('class', 'description_desition_point');
+      div1.textContent = j + ": " + answerDataObj[j];
+      div.appendChild(div1);
+      
+    }
+    divDescriptionDecision.appendChild(div);
+    
   }
 
   //
