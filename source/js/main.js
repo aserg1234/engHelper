@@ -40,7 +40,7 @@
    var btnSaveDataToFile = document.querySelector('.btn_save_data_to_file');
    var btnThemeData = document.querySelector('.btn_theme_data');     
    var btnAlThemeData = document.querySelector('.btn_all_theme_data');   
-   var btnExerciseData = document.querySelector('.btn_exercise_data');
+   //var btnExerciseData = document.querySelector('.btn_exercise_data');
 
    //
    var btnSubmitDecision = document.querySelector('.btn_submit_decision');
@@ -660,7 +660,9 @@
 
     //очищаем поле - старое решение
     var decisionData = document.getElementsByName('decisionData')[0];
+    var describeDecisionData = document.querySelector('.div_description_desition_points');
     decisionData.value = '';
+    describeDecisionData.textContent = '';
   
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
 
@@ -1045,7 +1047,7 @@
     btnThemeData.addEventListener("click", getThemeData);
 
     //обработка  получить задание из всей базы
-    btnExerciseData.addEventListener("click", getRandomStoreNum);
+    //btnExerciseData.addEventListener("click", getRandomStoreNum);
 
     //обработка отправить решение
     btnSubmitDecision.addEventListener("click", sendDecision);   
