@@ -44,7 +44,9 @@
 
    //
    var btnSubmitDecision = document.querySelector('.btn_submit_decision');
-   var divDescriptionDecision = document.querySelector('.result_data');   
+   var divDescriptionDecision = document.querySelector('.result_data');  
+   
+   var divDescriptionDecition = document.querySelector('.div_description_desition');   
 
    var btnFileData = document.querySelector('.btn_file_data');    
    var btnChangeDataByhand = document.querySelector('.btn_change_data_byhand'); 
@@ -57,6 +59,8 @@
 
    var foundInfoContainer = document.querySelector('.found_info_container');
    //var jsonDataDB = JSON.parse(base);
+
+
 
    var sendDataJsonDb = {};
    var enterDataJsonDb = {};
@@ -740,7 +744,6 @@
 
     answerData.textContent = answerDataObj[selectStoreCategoriesAnswer[0].value];//
 
-    var div = document.querySelector('.div_description_desition');
     //div.textContent = 'AAAAAAAAAAAAAAAAA';
     var divPoints = document.querySelector('.div_description_desition_points');
     //div.textContent = '';
@@ -756,21 +759,7 @@
     }
     //divDescriptionDecision.appendChild(div);
 
-      div.addEventListener("click", function() {
-        this.classList.toggle("active");
 
-        var panel = this.nextElementSibling;
-//console.dir(this);
-        if (panel.style.display === "block") {
-          panel.style.display = "none";
-          //this.style.padding = "10px 0 10px 0";
-        } else {
-          panel.style.display = "block";
-          //this.style.padding = "10px 0 0 0";            
-        }
-        
-      });  
-    
   }
 
   //
@@ -1065,7 +1054,24 @@
     //btnSearchChoice.addEventListener("click", getStoreCatForSearch) ; 
     
     //обработка поиск в хранилище
-    btnSearchInStore.addEventListener("click", searchInStore);      
+    btnSearchInStore.addEventListener("click", searchInStore); 
+    
+    //установка обработчика события на описание решения
+    divDescriptionDecition.addEventListener("click", function() {
+      this.classList.toggle("active");
+
+      var panel = this.nextElementSibling;
+
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+        //this.style.padding = "10px 0 10px 0";
+      } else {
+        panel.style.display = "block";
+        //this.style.padding = "10px 0 0 0";            
+      }
+      
+    });
+    //  
 
   }
    //////////////////////////////////////////////////////
