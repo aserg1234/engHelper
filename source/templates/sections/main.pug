@@ -5,9 +5,9 @@ section.form-section
                 form.form.form_create_db
                     a(href="javascript:void(0)").btn_close_create_db &times;
                     label(for="") Создать/Удалить хранилище
-                    input(type="text" name="inpStore" placeholder="имя хранилища")
+                    input(type="text" autocomplete="off" name="inpStore" placeholder="имя хранилища")
                     hr                    
-                    input(type="text" name="newCategory" placeholder="категория")
+                    input(type="text" autocomplete="off" name="newCategory" placeholder="категория")
 
                     select(name="uniqueCategory" placeholder="уникальность") 
                         option(value="false") неуникальное имя категории
@@ -64,7 +64,7 @@ section.form-section
                     select(name="searchStore") 
                     label() категория 
                     select(name="searchCategory")                                        
-                    input(type="text" name="inpSearchStore" placeholder="что ищем?")
+                    input(type="text" autocomplete="off" name="inpSearchStore" placeholder="что ищем?")
                     button(type="button").button.btn_search_in_store искать
                 
         .exercise_container
@@ -76,13 +76,13 @@ section.form-section
                 p задание
                 .themeCatChoice
                     label() Задать диапазон индексов
-                    div()
-                        input(type="text" name="lowRangeBoundForTask" placeholder="нижняя граница")
-                        input(type="text" name="highRangeBoundForTask" placeholder="верхняя граница")
+                    .index_range
+                        input(type="text" autocomplete="off" name="lowRangeBoundForTask" placeholder="нижняя граница")
+                        input(type="text" autocomplete="off" name="highRangeBoundForTask" placeholder="верхняя граница")
                     div()
                         label(for="") Выбрать категорию темы           
                         select(name="catThemeForTask")                
-                        input(type="text" name="themeForTask" placeholder="тема")              
+                        input(type="text" autocomplete="off" name="themeForTask" placeholder="тема")              
                     label(for="") Выбрать категорию заданий           
                     select(name="catForTask")
 

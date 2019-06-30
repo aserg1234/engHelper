@@ -1,10 +1,65 @@
+body{
+    background-color: rgb(218, 218, 218);
+    *{
+        outline:none;
+        transition: 0.5s;
+
+    
+    }
+}
+
 .hidden{
     display: none;
 }
 .button{
     //color: aqua;
 
+    border: none;
+    padding: 10px 5px 10px 5px;
+    border-radius: 15px;
+
+    &:active{
+        border: none;
+    }
+
     &:hover{
         cursor: pointer;
+        background-color: rgb(136, 135, 135);
     }
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 22px;
+    text-align-last: center;        
+    width: 100%;
+    border: none;
+    background-color: rgb(230, 230, 230);
+    border-radius: 15px;
+
+
+
+}
+
+input{
+    width: 100%;
+    text-align: center;
+    font-size: 22px;
+    border: none;
+    margin: 3px 0 3px 0;
+    background-color: rgb(230, 230, 230);
+    border-radius: 15px;
+
+
+    ::placeholder{
+        font-size: 22px;
+        background-color: rgb(230, 230, 230);
+
+    }
+}
+
+textarea{
+    border: none;
 }
