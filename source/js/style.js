@@ -7,7 +7,10 @@
     var btnOpenChangeDbMenu = document.querySelector('.btn_open_change_db');
     var btnOpenSearchInSoreMenu = document.querySelector('.btn_open_search_in_db');
     var pSearchResultHeader = document.querySelector('.search_result_header');
-    
+    var btnIndRange = document.querySelector('.div_button_index_range'); 
+    var btnChooseThemeCat = document.querySelector('.div_button_choose_theme_cat');  
+    var btnThemeCatChoiceBlock = document.querySelector('.themeCatChoice_block');        
+    //div_button_choose_theme_cat
     // function openNav(){
     //     var openedElement;
     //     if(this.className.contains('btn_open_create_db')){
@@ -55,7 +58,68 @@
 
     }
 
+    //открыть/скрыть задание диапазона индексов
+    function showHideIndRange(){
 
+        this.classList.toggle("active");
+
+        var panel = this.nextElementSibling;//childNodes[1]
+        console.dir(this);
+  
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+          //this.style.padding = "10px 0 10px 0";
+          btnIndRange.style.width = "50%";  
+          btnChooseThemeCat.style.width = "50%";                       
+        } else {
+          panel.style.display = "block";
+          //this.style.padding = "10px 0 0 0";   
+          btnIndRange.style.width = "100%";    
+          btnChooseThemeCat.style.width = "100%";                
+        }
+    }
+
+    //открыть/скрыть задание диапазона индексов
+    function сhooseThemeCat(){
+
+        this.classList.toggle("active");
+
+        var panel = this.nextElementSibling;
+  
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+          //this.style.padding = "10px 0 10px 0";
+
+          if(btnIndRange.style.width == "100%"){
+            btnIndRange.style.width = "100%";            
+            btnChooseThemeCat.style.width = "100%"; 
+          }else{
+            btnIndRange.style.width = "50%";  
+            btnChooseThemeCat.style.width = "50%";             
+          }
+
+
+        } else {
+          panel.style.display = "block";
+          //this.style.padding = "10px 0 0 0";  
+          btnIndRange.style.width = "100%";    
+          btnChooseThemeCat.style.width = "100%";                       
+        }
+    }
+
+    function showHideThemeCatChoice(){
+        this.classList.toggle("active");
+
+        var panel = this.nextElementSibling;
+  
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+          //this.style.padding = "10px 0 10px 0";
+        } else {
+          panel.style.display = "block";
+          //this.style.padding = "10px 0 0 0";            
+        }
+    }
 
     function addEventListeners(){
 
@@ -79,6 +143,17 @@
 
         //проказать/скрыть результаты поиска
         pSearchResultHeader.addEventListener('click',closeOpenSearchRes);
+
+        //
+        btnThemeCatChoiceBlock.addEventListener('click',showHideThemeCatChoice);
+        
+        //проказать/скрыть выбор диапазона заданий
+        btnIndRange.addEventListener('click', showHideIndRange);
+
+        //показать скрыть выбор темы заданий(только для тематич задания)
+        btnChooseThemeCat.addEventListener('click', сhooseThemeCat);
+
+
         
     }
 

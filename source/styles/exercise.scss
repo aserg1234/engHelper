@@ -6,14 +6,58 @@
     transform: translate(-50%);//transform: translate(-50%, -50%);
 
     width: 90%;
-    height: 300px;
+    // height: 300px;
 
     text-align: center;
 
+    // & [name="catForTask"]{
+
+    //     [value^="first"]{
+    //         color: rgb(206, 50, 50);            
+    //     }
+
+    // }
+
+    .task_header{
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .div_theme_block{
+        :after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        
+    }
+
     .themeCatChoice{ 
-        .index_range {
-            margin-right: -4px !important;
-            margin-left: -4px !important;
+
+        margin: 5px 0 5px 0;
+        width: 50%;
+
+    
+        .div_choose_theme_cat_block{
+            width: 49%;    
+        }
+
+
+        .choose_theme_cat{
+            display: none;
+
+            *{
+                margin-top: 5px;
+            }
+
+            // & select[name="catThemeForTask"]{
+            //     margin-top: 5px !important;
+            // }
+
+
+            // & input[name="ThemeForTask"]{
+            //     margin-top: 5px !important;
+            // }
         }
     }
 
@@ -24,10 +68,20 @@
        
 
     .btn_theme_data {
-        width: 100%;
+
         height: 36px;
+        border-radius: 15px 0 0 15px; 
+
         border: none;
-        margin-bottom: 5px;
+        margin: 5px 0 5px 0;
+        background-color: rgb(185, 183, 183);
+
+        width: 50%;
+        float: left;
+
+
+
+
 
         &:hover{
         
@@ -40,6 +94,7 @@
         width: 100%;
         height: 36px;
         border: none;
+        margin: 5px 0 5px 0;
 
         &:hover{
         
@@ -138,4 +193,73 @@
     }    
 }
 
+.themeCatChoice_block{
+
+    height: 36px;
+    border-radius:  0 15px 15px 0; 
+
+    font-size: 13px;
+
+    padding: 10px 0 10px 0;
+    margin: 5px 0 5px 0;
+    background-color: rgb(185, 183, 183);
+    cursor: pointer;
+
+    width: 50%;
+    float: left;
+
+    &:hover{
+        background-color: rgb(136, 135, 135);
+    }
+}
+
+.div_index_range_block{
+    //width: 49% !important;  
+    display: none;
+
+    :after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+              
+}
+
+.index_range {
+    margin-right: -4px !important;
+    margin-left: -4px !important;
+    display: none;
+} 
+
+.div_button_index_range{
+                
+    float: left;
+    width: 50%;
+
+    padding: 10px 0 10px 0;
+    margin: 0 0 5px 0;
+    background-color: rgb(185, 183, 183);
+    cursor: pointer;
+    // width: 45%;
+
+} 
+
+.div_button_choose_theme_cat{
+
+    float: left;
+    width: 50%;
+
+     padding: 10px 0 10px 0;
+    background-color: rgb(185, 183, 183);  
+    cursor: pointer;
+    // width: 45%;         
+}
+
+select[name="catThemeForTask"] {
+    margin-top: 5px;
+}
+
+input[name="themeForTask"] {
+    height: 35px;
+}
 

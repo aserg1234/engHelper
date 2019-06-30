@@ -583,6 +583,11 @@
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
 
     var taskCategory = document.getElementsByName('catForTask')[0].value;
+
+    if(taskCategory == 'first'){
+      showHelpMess();
+
+    }    
     var dataTask = document.querySelector('.request_data_exercise');
 
     req.onsuccess = function (evt) {
@@ -640,7 +645,7 @@
 
             if(!themeArr.length){
 
-              alert('Укажите границы диапазона индекстов или имя темы!');
+              alert('Укажите границы диапазона индексов или имя темы в \"данные\"!');
             }else{
               dataTask.textContent = themeArr[randNum-1][taskCategory];
               answerDataObj = themeArr[randNum-1];
@@ -668,6 +673,12 @@
     var req = indexedDB.open(DB_NAME);//, DB_VERSION
 
     var taskCategory = document.getElementsByName('catForTask')[0].value;
+
+    if(taskCategory == 'first'){
+      showHelpMess();
+
+    }  
+
     var dataTask = document.querySelector('.request_data_exercise');
 
     req.onsuccess = function (evt) {
@@ -980,6 +991,12 @@
 
   }
 
+  //показать сообщение о невыбранном хранилище
+
+  function showHelpMess(){
+    alert('Вы не выбрали хранилище(БД). Нажмите на \"выбрать/изменить БД\"');
+  }
+
   /////////////////////////////////////////////////////////////// 
   //обработчики событий
   function addEventListeners(){
@@ -1071,7 +1088,9 @@
       }
       
     });
-    //  
+    //
+    
+    
 
   }
    //////////////////////////////////////////////////////

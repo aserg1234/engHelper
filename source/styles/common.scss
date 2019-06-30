@@ -1,6 +1,8 @@
 body{
     background-color: rgb(218, 218, 218);
+    font-family: Arial, Helvetica, sans-serif;
     *{
+        box-sizing: border-box;
         outline:none;
         transition: 0.5s;
 
@@ -29,10 +31,11 @@ body{
 }
 
 select {
+    height: 36px;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    font-size: 22px;
+    font-size: 15px;
     text-align-last: center;        
     width: 100%;
     border: none;
@@ -41,10 +44,14 @@ select {
 
 }
 
+// option [selected] {
+//     color: blue;
+// }
+
 input{
     width: 100%;
     text-align: center;
-    font-size: 22px;
+    font-size: 15px;
     border: none;
     margin: 3px 0 3px 0;
     background-color: rgb(230, 230, 230);

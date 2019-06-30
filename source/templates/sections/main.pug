@@ -73,21 +73,26 @@ section.form-section
             button(type="button").button.btn_open_search_in_db поиск в БД                        
             
             form.form.form_request_data
-                p задание
-                .themeCatChoice
-                    label() Задать диапазон индексов
-                    .index_range
-                        input(type="text" autocomplete="off" name="lowRangeBoundForTask" placeholder="нижняя граница")
-                        input(type="text" autocomplete="off" name="highRangeBoundForTask" placeholder="верхняя граница")
-                    div()
-                        label(for="") Выбрать категорию темы           
-                        select(name="catThemeForTask")                
-                        input(type="text" autocomplete="off" name="themeForTask" placeholder="тема")              
-                    label(for="") Выбрать категорию заданий           
-                    select(name="catForTask")
+                p().task_header задание
+                //- label(for="") Выбрать категорию заданий           
+                select(name="catForTask")
+                    option(disabled selected value="first") Выбери категорию задания                
+                .div_theme_block    
+                    //- .themeCatChoice
+                    button(type='button').button.btn_theme_data тематич задание                     
+                    .themeCatChoice_block  данные
+                    .div_index_range_block
+                        .div_button_index_range Задать диапазон индексов
+                        .index_range
+                            input(type="text" autocomplete="off" name="lowRangeBoundForTask" placeholder="нижняя граница")
+                            input(type="text" autocomplete="off" name="highRangeBoundForTask" placeholder="верхняя граница")
+                        .div_choose_theme_cat_block
+                            .div_button_choose_theme_cat Выбрать категорию темы   
+                            .choose_theme_cat        
+                                select(name="catThemeForTask") 
+                                                
+                                input(type="text" autocomplete="off" name="themeForTask" placeholder="тема")              
 
-                //- button(type='button').button.btn_exercise_data задание из всех хранилищ
-                button(type='button').button.btn_theme_data тематическое задание                
                 button(type='button').button.btn_all_theme_data задание по всем темам
                 .request_data_exercise
                 //- здесь будет выводится задание
