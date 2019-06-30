@@ -152,11 +152,16 @@
 
     }
 
+    .answer_data_block{
+        width: 90%;
+        min-height: 100px; 
+    }
+
     .answer_data{
         width: 90%;
         min-height: 40px; 
-        margin-top: 10px; 
-        font-size: 30px;       
+        // margin-top: 10px; 
+        font-size: 20px;       
     }
     .result_data{
         
