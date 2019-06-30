@@ -111,14 +111,24 @@
         this.classList.toggle("active");
 
         var panel = this.nextElementSibling;
-  
-        if (panel.style.display === "block") {
-          panel.style.display = "none";
-          //this.style.padding = "10px 0 10px 0";
-        } else {
-          panel.style.display = "block";
-          //this.style.padding = "10px 0 0 0";            
+
+        var taskCategory = document.getElementsByName('catForTask')[0].value;
+
+        if(taskCategory == 'first'){
+          alert('Вы не выбрали хранилище(БД). Нажмите на \"выбрать/изменить БД\"');
+    
+        }else{
+
+          if (panel.style.display === "block") {
+            panel.style.display = "none";
+            //this.style.padding = "10px 0 10px 0";
+          } else {
+            panel.style.display = "block";
+            //this.style.padding = "10px 0 0 0";            
+          }          
         }
+  
+
     }
 
     function addEventListeners(){
