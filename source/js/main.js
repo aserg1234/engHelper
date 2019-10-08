@@ -38,6 +38,7 @@
    var btnDeleteData = document.querySelector('.btn_delete_data'); 
    var btnDataFromFile = document.querySelector('input[type=file]');
    var btnSaveDataToFile = document.querySelector('.btn_save_data_to_file');
+   var btnCreateTest = document.querySelector('.btn_create_test');    
    var btnThemeData = document.querySelector('.btn_theme_data');     
    var btnAlThemeData = document.querySelector('.btn_all_theme_data');   
    //var btnExerciseData = document.querySelector('.btn_exercise_data');
@@ -79,7 +80,12 @@
    var newDataFromFileObl ={};
 
    var answerDataObj = {};
- 
+
+   var cacheForCreateTest = new Map;
+   var cacheForTest = [];
+   var cacheForTestAnswersNum = [];
+   var cacheForTestAnswersText = [];
+  
 
    //создание базы данных и базового хранилища + создание списка хранилищ
    function openDb() {
@@ -573,8 +579,8 @@
 
   }
 
-  //получить задание по всем темам
-  function getThemeData(){
+  //получить тематическое задание
+  function getThemeData(act){
 
     //очищаем поле - старое решение
     var decisionData = document.getElementsByName('decisionData')[0];
@@ -586,7 +592,7 @@
 
     if(taskCategory == 'first'){
       showHelpMess();
-
+      return;
     }    
     var dataTask = document.querySelector('.request_data_exercise');
 
@@ -646,9 +652,22 @@
             if(!themeArr.length){
 
               alert('Укажите границы диапазона индексов или имя темы в \"данные\"!');
+              
             }else{
-              dataTask.textContent = themeArr[randNum-1][taskCategory];
-              answerDataObj = themeArr[randNum-1];
+              //для теста, если он включен  
+              //if( btnCreateTest.classList.contains('create_test_active') ) {
+                
+                createRandArrForTest(themeArr.length, themeArr);
+                // console.log(themeArr);
+
+              //}
+              // console.log(themeArr);
+              if( act !== 'createTest' ){
+                dataTask.textContent = themeArr[randNum-1][taskCategory];
+                answerDataObj = themeArr[randNum-1];                 
+              }
+               
+              
 
             }
             
@@ -661,7 +680,7 @@
 
   }
 
-  //получение тематического задания
+  //получение задание по всем темам
   function getAllThemeData(){
 
     //очищаем поле - старое решение
@@ -740,7 +759,8 @@
   //
   function chooseRandTask(max){
 
-      var rand = 1 - 0.5 + Math.random() * (max - 1 + 1)
+      // var rand = 0.5 + Math.random() * (max);
+      let rand = Math.random() * max;      
       rand = Math.round(rand); 
 
       //console.log(rand);
@@ -748,10 +768,29 @@
       return rand;
   }
   //
+  function createRandArrForTest(n, arr){
+
+    var ind = chooseRandTask(n)-1;
+    cacheForCreateTest.set(ind, arr[ind]);
+
+    // cacheForTest.push({ 0: ind, 1: arr[ind] });
+
+// console.log(cacheForCreateTest);      
+
+    if( cacheForCreateTest.size === n ) {
+      // cacheForTest = arr;
+      console.log(cacheForTest);      
+
+      return;
+    }   
+    return createRandArrForTest(n, arr);
+  }
+  //
   function sendDecision(){
 
     var answerData = document.querySelector('.answer_data');  
     answerData.classList.remove('hidden');
+    var decisionData = document.getElementsByName('decisionData')[0];
 
     answerData.textContent = answerDataObj[selectStoreCategoriesAnswer[0].value];//
 
@@ -759,6 +798,26 @@
     var divPoints = document.querySelector('.div_description_desition_points');
     //div.textContent = '';
     divPoints.textContent = '';
+
+    //сверка решения
+    const clientSolution = decisionData.value
+    .toLowerCase()
+    .trim()
+    .split(' ')
+    .filter( item => item.trim() )
+    .join(' ');
+
+    const taskSolution = answerData.textContent
+    .toLowerCase()
+    .trim()
+    .split(' ')
+    .filter( item => item.trim() )
+    .join(' ');
+// console.log('clientSolution: ' + clientSolution);
+// console.log('taskSolution: ' + taskSolution);
+    if(clientSolution !== taskSolution) answerData.style.color = 'red';
+    if(clientSolution === taskSolution) answerData.style.color = 'green';
+    /////////////////
 
     for(var j in answerDataObj){
 
@@ -991,12 +1050,100 @@
 
   }
 
-  //показать сообщение о невыбранном хранилище
+  //переключатель на тест на определенное кол-во заданий
+  function createTest(){
+    var taskCategory = document.getElementsByName('catForTask')[0].value;
+    var lowRangeBoundForTask = document.getElementsByName('lowRangeBoundForTask')[0].value;
+    var themeForTask = document.getElementsByName('themeForTask')[0].value;
+    if(taskCategory == 'first'){
+      showHelpMess();
+      return;
+    }  
+    if( !lowRangeBoundForTask && !themeForTask ){
+      showHelpMess2();
+      return;
+    }
 
+    btnCreateTest.classList.toggle('create_test_active');
+    cacheForCreateTest.clear();
+    getThemeData('createTest');
+// console.log(cacheForCreateTest);    
+    cacheForTestAnswersNum = [];
+    cacheForTestAnswersText = [];
+
+    // if( btnCreateTest.classList.contains('create_test_active') ) getThemeDataTest();
+    console.log(cacheForCreateTest);
+  }
+  //
+  function getThemeDataTest(){
+    var highRangeBoundForTask = document.getElementsByName('highRangeBoundForTask')[0].value;
+    if(cacheForCreateTest.size === 0) {
+      alert('ТЕСТ ЗАВЕРШЕН.');
+      let res = cacheForTestAnswersNum.reduce((prev, curr)=>prev+curr);
+      alert(cacheForTestAnswersNum);
+      alert(`Всего правильных: ${res} из ${highRangeBoundForTask}.\n 
+      Итого в процентах ${ res / (highRangeBoundForTask / 100) } %`);
+      return;
+    }
+
+    var taskCategory = document.getElementsByName('catForTask')[0].value;
+
+    var dataTask = document.querySelector('.request_data_exercise');
+    var mapIter = cacheForCreateTest.entries();
+console.log(mapIter);    
+    var currentItem = mapIter.next().value;
+
+    
+    var decisionData = document.getElementsByName('decisionData')[0];
+    var clientSolution = decisionData.value;
+
+    
+    console.log(cacheForCreateTest);
+    console.log(cacheForCreateTest.get(currentItem[0]));
+    // console.log(mapIter.next().value[0]);  
+    //
+    console.log(answerDataObj[selectStoreCategoriesAnswer[0].value]);    
+    if(clientSolution !== answerDataObj[selectStoreCategoriesAnswer[0].value]) {
+      console.log('неправильно');
+      
+      // console.log(answerDataObj[selectStoreCategoriesAnswer[0].value]);
+      // console.log(clientSolution);      
+      cacheForTestAnswersNum.push(0);
+      cacheForTestAnswersText.push(
+        'Ваш ответ: ' +  '; ' +
+        'Верный ответ: ' + dataTask.textContent
+      );
+    }
+    if(clientSolution === answerDataObj[selectStoreCategoriesAnswer[0].value]) {
+      console.log('правильно');
+      // console.log(dataTask.textContent);
+      cacheForTestAnswersNum.push(1);
+      cacheForTestAnswersText.push(
+        'Ваш ответ: ' +  '; ' +
+        'Верный ответ: ' + dataTask.textContent
+      );
+    }    
+    console.log(cacheForTestAnswersNum);
+
+    // заполняю новыми значениями задание
+    dataTask.textContent = currentItem[1][taskCategory];
+    answerDataObj = currentItem[1];
+
+    //очищаю предыдущее значение в кэше
+    cacheForCreateTest.delete(currentItem[0]);
+
+    // if(cacheForCreateTest.size === 1){      
+    // }
+    decisionData.value = '';
+  }
+
+  //показать сообщение о невыбранном хранилище
   function showHelpMess(){
     alert('Вы не выбрали хранилище(БД). Нажмите на \"выбрать/изменить БД\"');
   }
-
+  function showHelpMess2(){
+    alert('Укажите границы диапазона индексов или имя темы в \"данные\"!');
+  }
   /////////////////////////////////////////////////////////////// 
   //обработчики событий
   function addEventListeners(){
@@ -1046,8 +1193,11 @@
     //обработка получить задание по всем темам
     btnAlThemeData.addEventListener("click", getAllThemeData);
     
-    //обработка получить тематическое задание
-    btnThemeData.addEventListener("click", getThemeData);
+    //обработка получить тематическое задание getThemeData
+    btnThemeData.addEventListener("click", function(){
+      if( btnCreateTest.classList.contains('create_test_active') ) getThemeDataTest();
+      else getThemeData();
+    });
 
     //обработка  получить задание из всей базы
     //btnExerciseData.addEventListener("click", getRandomStoreNum);
@@ -1089,7 +1239,8 @@
       
     });
     //
-    
+    //обработка поиск в хранилище
+    btnCreateTest.addEventListener("click", createTest);     
     
 
   }

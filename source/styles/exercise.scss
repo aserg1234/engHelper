@@ -67,7 +67,7 @@
     }
        
 
-    .btn_theme_data {
+    .btn_create_test {
 
         height: 36px;
         border-radius: 15px 0 0 15px; 
@@ -79,9 +79,23 @@
         width: 50%;
         float: left;
 
+        &:hover{
+        
+            background-color: rgb(136, 135, 135);
+            transition: 0.4s;
+        }
+    }
+    .btn_theme_data {
 
+        height: 36px;
+        border-radius: 0 15px 15px 0; 
 
+        border: none;
+        margin: 5px 0 5px 0;
+        background-color: rgb(185, 183, 183);
 
+        width: 50%;
+        float: right;
 
         &:hover{
         
@@ -89,7 +103,23 @@
             transition: 0.4s;
         }
     }
+    .btn_submit_decision {
+        height: 36px;
+        border-radius: 15px 0 0 15px; 
 
+        border: none;
+        margin: 5px 0 5px 0;
+        background-color: rgb(185, 183, 183);
+
+        width: 50%;
+        float: left;
+
+        &:hover{
+        
+            background-color: rgb(136, 135, 135);
+            transition: 0.4s;
+        }
+    } 
     .btn_all_theme_data {
         width: 100%;
         height: 36px;
@@ -140,9 +170,9 @@
 
     .request_data_exercise{
         width: 90%;
-        min-height: 40px; 
+        min-height: 80px; 
         margin-top: 10px; 
-        font-size: 30px;
+        font-size: 20px;
 
     }
 
